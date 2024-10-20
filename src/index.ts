@@ -1,25 +1,29 @@
 class Tree<T> {
   value: T;
+
   children: Tree<T>[];
+
   constructor(value: T) {
     this.value = value;
     this.children = [];
   }
+
   addChildren(child: Tree<T>): void {
     this.children.push(child);
   }
 }
 function readTreeJson<T>(json): Tree<T> {
-  let newTree = new Tree<T>(json.value);
-  let treeArray = [{ node: newTree, json: json }];
+  const newTree = new Tree<T>(json.value);
+  const treeArray = [{ node: newTree, json }];
   while (treeArray.length > 0) {
-    let current = treeArray.pop();
+    const current = treeArray.pop();
     if (current) {
-      for (let child of current?.json.children) {
-        let newChild = new Tree<T>(child.value);
-        treeArray.push({ node: newChild, json: child });
+      const { children } = current.json;
+      children.forEach((child) => {
+        const newChild = new Tree<T>(child.value);
         current.node.addChildren(newChild);
-      }
+        treeArray.push({ node: newChild, json: child });
+      });
     }
   }
   return newTree;
