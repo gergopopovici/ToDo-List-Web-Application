@@ -28,3 +28,9 @@ function readTreeJson<T>(json): Tree<T> {
   }
   return newTree;
 }
+
+async function treeReader<T>(url: string): Promise<Tree<T>> {
+  const response = await fetch(url);
+  const json = await response.json();
+  return readTreeJson<T>(json);
+}
