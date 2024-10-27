@@ -5,7 +5,7 @@
       "DOM",
       "ESNext"
     ],
-    "module": "commonjs",
+    "module": "ESNext",
     "moduleResolution": "node",
     "rootDir": "src",
     "outDir": "dist",
