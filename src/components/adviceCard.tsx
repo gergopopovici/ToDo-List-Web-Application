@@ -3,11 +3,13 @@ import { Card, CardContent, Typography, IconButton } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Advice } from '../interfaces/advice';
 
-const AdviceCard: React.FC<{ advice: Advice; isFavorite: boolean; onToggleFavorite: (id: number) => void }> = ({
-  advice,
-  isFavorite,
-  onToggleFavorite,
-}) => {
+interface AdviceCardProps {
+  advice: Advice;
+  isFavorite: boolean;
+  onToggleFavorite: (id: number) => void;
+}
+
+function AdviceCard({ advice, isFavorite, onToggleFavorite }: AdviceCardProps) {
   return (
     <Card>
       <CardContent>
@@ -18,6 +20,6 @@ const AdviceCard: React.FC<{ advice: Advice; isFavorite: boolean; onToggleFavori
       </CardContent>
     </Card>
   );
-};
+}
 
 export default AdviceCard;

@@ -1,10 +1,10 @@
 import React from 'react';
-import { fetchRandomAdvice, fetchAdviceByKeyword } from '../Api/api';
 import { Button, Typography, Switch, Stack, TextField } from '@mui/material';
+import { fetchRandomAdvice, fetchAdviceByKeyword } from '../Api/api';
 import AdviceCard from './adviceCard';
 import { Advice } from '../interfaces/advice';
 
-const SwiftAdvice: React.FC = () => {
+const SwiftAdvice: React.FC = function SwiftAdvice() {
   const [advice, setAdvice] = React.useState<Advice[]>([]);
   const [favorites, setFavorites] = React.useState<Set<number>>(new Set());
   const [showFavorites, setShowFavorites] = React.useState(false);
@@ -14,17 +14,23 @@ const SwiftAdvice: React.FC = () => {
   const handleGetRandomAdvice = async () => {
     const result = await fetchRandomAdvice();
     if (result) {
-      setAdvice((prev) => prev.concat(result));
+      setAdvice((prev) => {
+        if (!prev.some((a) => a.id === result.id)) {
+          return [...prev, result];
+        }
+        return prev;
+      });
     }
   };
-  const handleGetAdviceByKeyword = async (keyword: string) => {
-    const result = await fetchAdviceByKeyword(keyword);
+  const handleGetAdviceByKeyword = async (searchKeyWord: string) => {
+    const result = await fetchAdviceByKeyword(searchKeyWord);
     if (result.slips) {
+      setFavorites(new Set());
       setAdvice(result.slips);
       setErrorMessage('');
     } else {
       setAdvice([]);
-      setErrorMessage(`No advice found for keyword "${keyword}"`);
+      setErrorMessage(`No advice found for keyword "${searchKeyWord}"`);
     }
   };
   const handleToggleFavorite = (id: number) => {
@@ -52,7 +58,12 @@ const SwiftAdvice: React.FC = () => {
         {advice
           .filter((a) => !showFavorites || favorites.has(a.id))
           .map((a) => (
-            <AdviceCard advice={a} isFavorite={favorites.has(a.id)} onToggleFavorite={handleToggleFavorite} />
+            <AdviceCard
+              key={a.id}
+              advice={a}
+              isFavorite={favorites.has(a.id)}
+              onToggleFavorite={handleToggleFavorite}
+            />
           ))}
       </Stack>
     </div>
