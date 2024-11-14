@@ -1,5 +1,8 @@
+import './App.css';
+import SwiftAdvice from './components/swiftAdvice';
+
 function App() {
-  return <></>;
+  return <SwiftAdvice />;
 }
 
 export default App;
