@@ -1,6 +1,7 @@
 import React from 'react';
-import { Card, CardContent, Typography } from '@mui/material';
+import { Card, CardContent, Typography, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { DeleteToDoIcon } from '../buttons/DeleteToDoIcon';
 
 interface ToDoCardProps {
   id: number;
@@ -39,6 +40,7 @@ function ToDoCard({ id, title, date, priority }: ToDoCardProps) {
         margin: 2,
         cursor: 'pointer',
         transition: 'transform 0.3s ease-in-out',
+        position: 'relative',
         '&:hover': {
           transform: 'scale(1.1)',
         },
@@ -56,6 +58,20 @@ function ToDoCard({ id, title, date, priority }: ToDoCardProps) {
           <strong>Priority:</strong> {priority}
         </Typography>
       </CardContent>
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: 8,
+          right: 8,
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          zIndex: 1,
+          gap: '10px',
+        }}
+      >
+        <DeleteToDoIcon id={id} />
+      </Box>
     </Card>
   );
 }
