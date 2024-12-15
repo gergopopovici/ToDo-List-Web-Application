@@ -70,7 +70,7 @@ function ToDoCard({ id, title, date, priority }: ToDoCardProps) {
           gap: '10px',
         }}
       >
-        <DeleteToDoIcon id={id} />
+        <DeleteToDoIcon id={id} onDelete={() => {}} />
       </Box>
     </Card>
   );

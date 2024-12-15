@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import { IconButton, Box, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useQueryClient } from 'react-query';
 import { useButtonClickedContext } from '../../Contexts/ButtonClickedProvider';
 import { destroyToDo } from '../../services/ToDoService';
 
 interface DeleteToDoProps {
   id: number;
+  onDelete: () => void;
 }
 
-export function DeleteToDoIcon({ id }: DeleteToDoProps) {
+export function DeleteToDoIcon({ id, onDelete }: DeleteToDoProps) {
   const { setDeleteTodoButtonClicked } = useButtonClickedContext();
   const [binIconClicked, setBinIconClicked] = useState<boolean>(false);
+  const queryClient = useQueryClient();
 
   const handleBinClick = (event: React.MouseEvent) => {
     event.stopPropagation();
@@ -29,6 +32,8 @@ export function DeleteToDoIcon({ id }: DeleteToDoProps) {
         await destroyToDo(id);
         setBinIconClicked(false);
         setDeleteTodoButtonClicked(true);
+        queryClient.invalidateQueries('todos');
+        onDelete();
       }
     } catch (error: unknown) {
       const errorMessage = (error as { response?: { data: string } }).response?.data || 'Unknown error occurred';

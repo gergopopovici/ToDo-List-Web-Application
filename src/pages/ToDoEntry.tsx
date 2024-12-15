@@ -1,11 +1,13 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { Box, Typography } from '@mui/material';
 import { getToDo } from '../services/ToDoService';
 import { ToDo } from '../models/ToDo';
+import { DeleteToDoIcon } from '../components/buttons/DeleteToDoIcon';
 
 function ToDoEntry() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   if (!id) {
     throw new Error('No id provided');
   }
@@ -17,6 +19,10 @@ function ToDoEntry() {
     return <div>Error loading todo</div>;
   }
   const todoDate = todo?.date ? new Date(todo.date) : null;
+
+  const handleDelete = () => {
+    navigate('/');
+  };
 
   const getPriorityColor = (priorityLevel?: number) => {
     switch (priorityLevel) {
@@ -36,6 +42,7 @@ function ToDoEntry() {
       <Typography variant="h4" gutterBottom>
         {todo?.title}
       </Typography>
+      {todo?.id !== undefined && <DeleteToDoIcon id={todo.id} onDelete={handleDelete} />}
       <Typography variant="body1" gutterBottom>
         <strong>Description:</strong> {todo?.description}
       </Typography>
