@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
+import { Box, Typography } from '@mui/material';
 import { getToDos } from '../services/ToDoService';
 import { ToDo } from '../models/ToDo';
 import ToDoCard from '../components/cards/ToDoCard';
@@ -34,14 +35,20 @@ function ListToDo() {
   }
 
   return (
-    <div>
-      <h1>My ToDos</h1>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+    <Box sx={{ padding: 2 }}>
+      <Typography variant="h3">My ToDos</Typography>
+      <Box display="flex" flexWrap="wrap" gap={2}>
         {todos?.map((todo) => (
-          <ToDoCard key={todo.id} id={todo.id ?? 0} title={todo.title} date={todo.date} priority={todo.priority} />
+          <ToDoCard
+            key={todo.id}
+            id={todo.id ?? 0}
+            title={todo.title}
+            date={new Date(todo.date)}
+            priority={todo.priority}
+          />
         ))}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 

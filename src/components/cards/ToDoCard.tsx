@@ -30,7 +30,7 @@ function ToDoCard({ id, title, date, priority }: ToDoCardProps) {
     }
   };
 
-  const formattedDate = date instanceof Date ? date.toDateString() : 'Invalid Date';
+  const todoDate = date ? new Date(date) : null;
 
   return (
     <Card
@@ -52,7 +52,7 @@ function ToDoCard({ id, title, date, priority }: ToDoCardProps) {
           {title}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          <strong>Due:</strong> {formattedDate}
+          <strong>Due:</strong> {todoDate?.toDateString()}
         </Typography>
         <Typography variant="body2" color={getPriorityColor(priority)}>
           <strong>Priority:</strong> {priority}
