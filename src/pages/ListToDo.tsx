@@ -64,6 +64,8 @@ function ListToDo() {
           right: 16,
           width: 56,
           height: 56,
+          backgroundColor: 'primary.main',
+          color: 'white',
           '&:hover': {
             color: 'green',
           },
