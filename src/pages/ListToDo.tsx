@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, IconButton } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import AddIcon from '@mui/icons-material/Add';
 import { getToDos } from '../services/ToDoService';
 import { ToDo } from '../models/ToDo';
 import ToDoCard from '../components/cards/ToDoCard';
@@ -10,6 +12,7 @@ function ListToDo() {
   const queryClient = useQueryClient();
   const { data: todos, error, isLoading } = useQuery<ToDo[]>('todos', getToDos);
   const { deleteTodoButtonClicked, setDeleteTodoButtonClicked } = useButtonClickedContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (deleteTodoButtonClicked) {
@@ -34,6 +37,10 @@ function ListToDo() {
     return <div>Error loading toDos</div>;
   }
 
+  const handleAddClick = () => {
+    navigate('/create');
+  };
+
   return (
     <Box sx={{ padding: 2 }}>
       <Typography variant="h3">My ToDos</Typography>
@@ -48,6 +55,23 @@ function ListToDo() {
           />
         ))}
       </Box>
+      <IconButton
+        color="primary"
+        aria-label="add"
+        sx={{
+          position: 'fixed',
+          bottom: 16,
+          right: 16,
+          width: 56,
+          height: 56,
+          '&:hover': {
+            color: 'green',
+          },
+        }}
+        onClick={handleAddClick}
+      >
+        <AddIcon />
+      </IconButton>
     </Box>
   );
 }

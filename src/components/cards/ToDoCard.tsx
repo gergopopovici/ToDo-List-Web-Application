@@ -1,6 +1,8 @@
 import React from 'react';
-import { Card, CardContent, Typography, Box } from '@mui/material';
+import { Card, CardContent, Typography, Box, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { format } from 'date-fns';
+import EditIcon from '@mui/icons-material/Edit';
 import { DeleteToDoIcon } from '../buttons/DeleteToDoIcon';
 
 interface ToDoCardProps {
@@ -30,7 +32,12 @@ function ToDoCard({ id, title, date, priority }: ToDoCardProps) {
     }
   };
 
-  const todoDate = date ? new Date(date) : null;
+  const handleEditClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    navigate(`/edit/${id}`);
+  };
+
+  const todoDate = format(new Date(date), 'dd-MM-yyyy');
 
   return (
     <Card
@@ -52,7 +59,7 @@ function ToDoCard({ id, title, date, priority }: ToDoCardProps) {
           {title}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          <strong>Due:</strong> {todoDate?.toDateString()}
+          <strong>Due:</strong> {todoDate}
         </Typography>
         <Typography variant="body2" color={getPriorityColor(priority)}>
           <strong>Priority:</strong> {priority}
@@ -70,6 +77,9 @@ function ToDoCard({ id, title, date, priority }: ToDoCardProps) {
           gap: '10px',
         }}
       >
+        <IconButton aria-label="edit" onClick={handleEditClick} sx={{ '&:hover': { color: 'blue' } }}>
+          <EditIcon />
+        </IconButton>
         <DeleteToDoIcon id={id} onDelete={() => {}} />
       </Box>
     </Card>
