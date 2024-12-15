@@ -1,7 +1,20 @@
-// import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import ListToDo from './pages/ListToDo';
+
+const queryClient = new QueryClient();
 
 function App() {
-  return <h1>ToDo List</h1>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Navigate to="/toDos" />} />
+          <Route path="/toDos" element={<ListToDo />} />
+        </Routes>
+      </Router>
+    </QueryClientProvider>
+  );
 }
 
 export default App;
