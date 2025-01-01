@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext, useContext } from 'react';
 import { useQuery } from 'react-query';
 import { getUserById } from '../services/UserService';
 import { ResponseUserDTO } from '../models/User';
@@ -10,6 +10,20 @@ const getCookieValue = (name: string): string | undefined => {
   const parts = value.split(`; ${name}=`);
   if (parts.length === 2) return parts.pop()?.split(';').shift();
   return undefined;
+};
+
+interface UserContextType {
+  user: ResponseUserDTO | undefined;
+}
+
+const UserContext = createContext<UserContextType | undefined>(undefined);
+
+export const useUser = () => {
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error('useUser must be used within a UserProvider');
+  }
+  return context;
 };
 
 function UserProvider({ children }: { children: React.ReactNode }) {
@@ -27,16 +41,18 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     logout();
   };
 
+  const userContextValue = React.useMemo(() => ({ user }), [user]);
+
   if (isError) {
     console.error('Error fetching user:', error);
     return <div>Error loading user data. Please try again.</div>;
   }
 
   return (
-    <div>
+    <UserContext.Provider value={userContextValue}>
       {isAuthenticated && user ? <Navbar username={user.username} onSignOut={handleSignOut} /> : null}
       {children}
-    </div>
+    </UserContext.Provider>
   );
 }
 

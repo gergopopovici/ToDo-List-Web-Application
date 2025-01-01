@@ -10,7 +10,7 @@ import ButtonClickedProvider from './Contexts/ButtonClickedProvider';
 import { AuthProvider } from './Contexts/AuthProvider';
 import ProtectedRoute from './components/ProtectedRoute';
 import RegisterPage from './pages/RegisterPage';
-import UserProvider from './components/userProvider';
+import UserProvider from './components/UserProvider';
 import PublicRoute from './components/PublicRoute';
 
 const queryClient = new QueryClient();

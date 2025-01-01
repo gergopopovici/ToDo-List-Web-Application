@@ -3,16 +3,25 @@ import { useQuery, useQueryClient } from 'react-query';
 import { Box, Typography, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
-import { getToDos } from '../services/ToDoService';
-import { ToDo } from '../models/ToDo';
+import { getToDosByUser } from '../services/ToDoService';
+import { ResponseToDoDTO } from '../models/ToDo';
 import ToDoCard from '../components/cards/ToDoCard';
 import { useButtonClickedContext } from '../Contexts/ButtonClickedProvider';
+import { useUser } from '../components/UserProvider';
 
 function ListToDo() {
   const queryClient = useQueryClient();
-  const { data: todos, error, isLoading } = useQuery<ToDo[]>('todos', getToDos);
   const { deleteTodoButtonClicked, setDeleteTodoButtonClicked } = useButtonClickedContext();
   const navigate = useNavigate();
+  const { user } = useUser();
+  const userId = user?.id;
+  const {
+    data: todos,
+    error,
+    isLoading,
+  } = useQuery<ResponseToDoDTO[]>(['todos', userId], () => getToDosByUser(userId!), {
+    enabled: !!userId,
+  });
 
   useEffect(() => {
     if (deleteTodoButtonClicked) {

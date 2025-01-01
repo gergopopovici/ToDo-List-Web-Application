@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Box, TextField, Button, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery, useMutation } from 'react-query';
+import { Box, TextField, Button, Typography } from '@mui/material';
 import { format } from 'date-fns';
 import { getToDo, createToDo, updateToDo } from '../services/ToDoService';
-import { ToDo } from '../models/ToDo';
+import { RequestToDoDTO, ResponseToDoDTO } from '../models/ToDo';
+import { useUser } from '../components/UserProvider';
 
 function ToDoForm() {
   const { id } = useParams<{ id: string }>();
@@ -13,8 +14,9 @@ function ToDoForm() {
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [priority, setPriority] = useState(1);
+  const { user } = useUser();
 
-  const { isLoading } = useQuery<ToDo>(['todo', id], () => getToDo(id!), {
+  const { isLoading } = useQuery<ResponseToDoDTO>(['todo', id], () => getToDo(id!), {
     enabled: !!id,
     onSuccess: (data) => {
       setTitle(data.title);
@@ -25,53 +27,57 @@ function ToDoForm() {
   });
 
   const createMutation = useMutation(createToDo, {
-    onSuccess: (newToDo) => {
-      console.log(newToDo);
-      navigate(`/todo/${newToDo.id}`);
+    onSuccess: () => {
+      navigate('/toDos');
     },
   });
 
-  const updateMutation = useMutation(
-    ({ id: toDoId, newToDo }: { id: number; newToDo: Omit<ToDo, 'id'> }) => updateToDo(toDoId, newToDo),
-    {
-      onSuccess: () => {
-        navigate(`/todo/${id}`);
-      },
+  const updateMutation = useMutation((updatedToDo: RequestToDoDTO) => updateToDo(Number(id), updatedToDo), {
+    onSuccess: () => {
+      navigate('/toDos');
     },
-  );
+  });
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    const newToDo: Omit<ToDo, 'id'> = {
+    const newToDo: RequestToDoDTO = {
       title,
       description,
       date: new Date(dueDate),
       priority,
+      userId: user!.id,
     };
 
     if (id) {
-      updateMutation.mutate({ id: parseInt(id, 10), newToDo });
+      updateMutation.mutate(newToDo);
     } else {
       createMutation.mutate(newToDo);
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Box
       component="form"
       onSubmit={handleSubmit}
-      sx={{ display: 'flex', flexDirection: 'column', gap: 2, marginTop: 5 }}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+        padding: 3,
+        backgroundColor: 'white',
+        borderRadius: 1,
+        boxShadow: 1,
+      }}
     >
+      <Typography variant="h4" gutterBottom>
+        {id ? 'Edit ToDo' : 'Create ToDo'}
+      </Typography>
       <TextField label="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
-      <TextField
-        label="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        required
-        multiline
-      />
+      <TextField label="Description" value={description} onChange={(e) => setDescription(e.target.value)} required />
       <TextField
         label="Due Date"
         value={dueDate}
@@ -82,16 +88,20 @@ function ToDoForm() {
           shrink: true,
         }}
       />
-      <FormControl fullWidth>
-        <InputLabel>Priority</InputLabel>
-        <Select value={priority} onChange={(e) => setPriority(e.target.value as number)} label="Priority">
-          <MenuItem value={1}>High</MenuItem>
-          <MenuItem value={2}>Medium</MenuItem>
-          <MenuItem value={3}>Low</MenuItem>
-        </Select>
-      </FormControl>
-      <Button type="submit" variant="contained" disabled={createMutation.isLoading || updateMutation.isLoading}>
-        {id ? 'Update ToDo' : 'Create ToDo'}
+      <TextField
+        label="Priority"
+        type="number"
+        value={priority}
+        onChange={(e) => setPriority(Number(e.target.value))}
+        required
+      />
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        disabled={createMutation.isLoading || updateMutation.isLoading}
+      >
+        {id ? 'Update' : 'Create'}
       </Button>
     </Box>
   );

@@ -4,7 +4,7 @@ import { Box, Typography, IconButton } from '@mui/material';
 import { format } from 'date-fns';
 import EditIcon from '@mui/icons-material/Edit';
 import { getToDo } from '../services/ToDoService';
-import { ToDo } from '../models/ToDo';
+import { ResponseToDoDTO } from '../models/ToDo';
 import { DeleteToDoIcon } from '../components/buttons/DeleteToDoIcon';
 
 function ToDoEntry() {
@@ -13,7 +13,7 @@ function ToDoEntry() {
   if (!id) {
     throw new Error('No id provided');
   }
-  const { data: todo, error, isLoading } = useQuery<ToDo>(['todo', id], () => getToDo(id));
+  const { data: todo, error, isLoading } = useQuery<ResponseToDoDTO>(['todo', id], () => getToDo(id));
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -67,4 +67,5 @@ function ToDoEntry() {
     </Box>
   );
 }
+
 export default ToDoEntry;

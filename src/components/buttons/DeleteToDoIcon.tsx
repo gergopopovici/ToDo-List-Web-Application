@@ -4,6 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useQueryClient } from 'react-query';
 import { useButtonClickedContext } from '../../Contexts/ButtonClickedProvider';
 import { destroyToDo } from '../../services/ToDoService';
+import { useUser } from '../UserProvider';
 
 interface DeleteToDoProps {
   id: number;
@@ -14,6 +15,7 @@ export function DeleteToDoIcon({ id, onDelete }: DeleteToDoProps) {
   const { setDeleteTodoButtonClicked } = useButtonClickedContext();
   const [binIconClicked, setBinIconClicked] = useState<boolean>(false);
   const queryClient = useQueryClient();
+  const { user } = useUser();
 
   const handleBinClick = (event: React.MouseEvent) => {
     event.stopPropagation();
@@ -29,7 +31,11 @@ export function DeleteToDoIcon({ id, onDelete }: DeleteToDoProps) {
     event.stopPropagation();
     try {
       if (id) {
-        await destroyToDo(id);
+        if (user?.id !== undefined) {
+          await destroyToDo(id, user.id);
+        } else {
+          throw new Error('User ID is undefined');
+        }
         setBinIconClicked(false);
         setDeleteTodoButtonClicked(true);
         queryClient.invalidateQueries('todos');
