@@ -71,6 +71,9 @@ function LoginPage() {
         <Button type="submit" variant="contained" color="primary" disabled={mutation.isLoading}>
           Submit
         </Button>
+        <Button variant="contained" color="primary" onClick={() => navigate('/register')}>
+          Register
+        </Button>
       </Box>
     </Box>
   );

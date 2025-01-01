@@ -12,9 +12,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    console.log(document.cookie);
     const userId = document.cookie.split('; ').find((row) => row.startsWith('userId='));
-    console.log(userId);
     if (userId) {
       setIsAuthenticated(true);
     }
@@ -23,7 +21,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logedIn = () => setIsAuthenticated(true);
   const logout = () => {
     setIsAuthenticated(false);
-    document.cookie = 'userId=; Max-Age=0; path=/';
+    document.cookie = 'userId=; Max-Age=0; path=/'; // Clear the cookie
   };
 
   const value = React.useMemo(() => ({ isAuthenticated, logedIn, logout }), [isAuthenticated]);

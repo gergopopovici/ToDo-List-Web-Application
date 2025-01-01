@@ -45,9 +45,6 @@ function ListToDo() {
     <Box sx={{ padding: 2 }}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h3">My ToDos</Typography>
-        <Typography variant="h6" color="red">
-          Welcome John_Doe
-        </Typography>
       </Box>
       <Box display="flex" flexWrap="wrap" gap={2}>
         {todos?.map((todo) => (

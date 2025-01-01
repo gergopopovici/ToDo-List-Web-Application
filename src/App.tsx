@@ -9,6 +9,9 @@ import LoginPage from './pages/LoginPage';
 import ButtonClickedProvider from './Contexts/ButtonClickedProvider';
 import { AuthProvider } from './Contexts/AuthProvider';
 import ProtectedRoute from './components/ProtectedRoute';
+import RegisterPage from './pages/RegisterPage';
+import UserProvider from './components/userProvider';
+import PublicRoute from './components/PublicRoute';
 
 const queryClient = new QueryClient();
 
@@ -18,16 +21,21 @@ function App() {
       <AuthProvider>
         <ButtonClickedProvider>
           <Router>
-            <Routes>
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/" element={<Navigate to="/toDos" />} />
-              <Route element={<ProtectedRoute />}>
-                <Route path="/toDos" element={<ListToDo />} />
-                <Route path="/todo/:id" element={<ToDoEntry />} />
-                <Route path="/create" element={<ToDoForm />} />
-                <Route path="/edit/:id" element={<ToDoForm />} />
-              </Route>
-            </Routes>
+            <UserProvider>
+              <Routes>
+                <Route element={<PublicRoute />}>
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/" element={<Navigate to="/toDos" />} />
+                  <Route path="/register" element={<RegisterPage />} />
+                </Route>
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/toDos" element={<ListToDo />} />
+                  <Route path="/todo/:id" element={<ToDoEntry />} />
+                  <Route path="/create" element={<ToDoForm />} />
+                  <Route path="/edit/:id" element={<ToDoForm />} />
+                </Route>
+              </Routes>
+            </UserProvider>
           </Router>
         </ButtonClickedProvider>
       </AuthProvider>
