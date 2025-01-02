@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box, TextField, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
+import Confetti from 'react-confetti';
 import { loginIn } from '../services/LoginService';
 import { Login } from '../models/Login';
 import { useAuth } from '../Contexts/AuthProvider';
@@ -10,13 +11,18 @@ function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [showConfetti, setShowConfetti] = useState(false);
   const navigate = useNavigate();
   const { logedIn } = useAuth();
 
   const mutation = useMutation((login: Login) => loginIn(login), {
     onSuccess: () => {
-      logedIn();
-      navigate('/toDos');
+      setShowConfetti(true);
+      setTimeout(() => {
+        setShowConfetti(false);
+        navigate('/toDos');
+        logedIn();
+      }, 1500);
     },
     onError: () => {
       setError('Invalid username or password');
@@ -39,6 +45,7 @@ function LoginPage() {
         backgroundColor: '#f0f0f0',
       }}
     >
+      {showConfetti && <Confetti />}
       <Box
         component="form"
         onSubmit={handleSubmit}
