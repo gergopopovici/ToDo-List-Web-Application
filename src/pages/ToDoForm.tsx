@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery, useMutation } from 'react-query';
 import { Box, TextField, Button, Typography } from '@mui/material';
@@ -14,6 +14,7 @@ function ToDoForm() {
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [priority, setPriority] = useState(1);
+  const [priorityError, setPriorityError] = useState('');
   const { user } = useUser();
 
   const { isLoading } = useQuery<ResponseToDoDTO>(['todo', id], () => getToDo(id!), {
@@ -55,6 +56,14 @@ function ToDoForm() {
     }
   };
 
+  useEffect(() => {
+    if (priority < 1 || priority > 3) {
+      setPriorityError('Priority must be between 1 and 3');
+    } else {
+      setPriorityError('');
+    }
+  }, [priority]);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -93,6 +102,8 @@ function ToDoForm() {
         type="number"
         value={priority}
         onChange={(e) => setPriority(Number(e.target.value))}
+        error={!!priorityError}
+        helperText={priorityError}
         required
       />
       <Button

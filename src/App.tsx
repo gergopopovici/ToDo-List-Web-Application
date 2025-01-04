@@ -6,12 +6,13 @@ import ListToDo from './pages/ListToDo';
 import ToDoEntry from './pages/ToDoEntry';
 import ToDoForm from './pages/ToDoForm';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 import ButtonClickedProvider from './Contexts/ButtonClickedProvider';
 import { AuthProvider } from './Contexts/AuthProvider';
 import ProtectedRoute from './components/ProtectedRoute';
-import RegisterPage from './pages/RegisterPage';
-import UserProvider from './components/UserProvider';
 import PublicRoute from './components/PublicRoute';
+import UserProvider from './components/UserProvider';
+import ThemeProvider from './Contexts/ThemeContext';
 
 const queryClient = new QueryClient();
 
@@ -21,21 +22,27 @@ function App() {
       <AuthProvider>
         <ButtonClickedProvider>
           <Router>
-            <UserProvider>
-              <Routes>
-                <Route element={<PublicRoute />}>
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route path="/" element={<Navigate to="/toDos" />} />
-                  <Route path="/register" element={<RegisterPage />} />
-                </Route>
-                <Route element={<ProtectedRoute />}>
-                  <Route path="/toDos" element={<ListToDo />} />
-                  <Route path="/todo/:id" element={<ToDoEntry />} />
-                  <Route path="/create" element={<ToDoForm />} />
-                  <Route path="/edit/:id" element={<ToDoForm />} />
-                </Route>
-              </Routes>
-            </UserProvider>
+            <Routes>
+              <Route element={<PublicRoute />}>
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/" element={<Navigate to="/toDos" />} />
+              </Route>
+              <Route
+                element={
+                  <ThemeProvider>
+                    <UserProvider>
+                      <ProtectedRoute />
+                    </UserProvider>
+                  </ThemeProvider>
+                }
+              >
+                <Route path="/toDos" element={<ListToDo />} />
+                <Route path="/todo/:id" element={<ToDoEntry />} />
+                <Route path="/create" element={<ToDoForm />} />
+                <Route path="/edit/:id" element={<ToDoForm />} />
+              </Route>
+            </Routes>
           </Router>
         </ButtonClickedProvider>
       </AuthProvider>

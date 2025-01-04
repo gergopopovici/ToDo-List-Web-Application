@@ -2,6 +2,7 @@ import React from 'react';
 import { AppBar, Toolbar, Typography, IconButton } from '@mui/material';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { useNavigate } from 'react-router-dom';
+import ThemeSwitcher from './ThemeSwitcher';
 
 interface NavbarProps {
   username: string;
@@ -22,6 +23,7 @@ function Navbar({ username, onSignOut }: NavbarProps) {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           Welcome {username}
         </Typography>
+        <ThemeSwitcher />
         <IconButton color="inherit" onClick={handleSignOut}>
           <ExitToAppIcon />
         </IconButton>
