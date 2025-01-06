@@ -21,12 +21,14 @@ function Navbar({ username, onSignOut }: NavbarProps) {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Welcome {username}
+          Welcome {username || ''}
         </Typography>
         <ThemeSwitcher />
-        <IconButton color="inherit" onClick={handleSignOut}>
-          <ExitToAppIcon />
-        </IconButton>
+        {username && (
+          <IconButton color="inherit" onClick={handleSignOut}>
+            <ExitToAppIcon />
+          </IconButton>
+        )}
       </Toolbar>
     </AppBar>
   );

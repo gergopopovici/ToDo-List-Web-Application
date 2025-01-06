@@ -3,9 +3,6 @@ import { useTheme } from '../Contexts/ThemeContext';
 
 function ThemeSwitcher() {
   const themeContext = useTheme();
-  if (!themeContext) {
-    return null;
-  }
   const { toggleTheme } = themeContext;
   return (
     <Box sx={{ display: 'flex', gap: 2 }}>

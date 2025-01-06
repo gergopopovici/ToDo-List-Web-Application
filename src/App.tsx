@@ -21,29 +21,25 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <ButtonClickedProvider>
-          <Router>
-            <Routes>
-              <Route element={<PublicRoute />}>
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/" element={<Navigate to="/toDos" />} />
-              </Route>
-              <Route
-                element={
-                  <ThemeProvider>
-                    <UserProvider>
-                      <ProtectedRoute />
-                    </UserProvider>
-                  </ThemeProvider>
-                }
-              >
-                <Route path="/toDos" element={<ListToDo />} />
-                <Route path="/todo/:id" element={<ToDoEntry />} />
-                <Route path="/create" element={<ToDoForm />} />
-                <Route path="/edit/:id" element={<ToDoForm />} />
-              </Route>
-            </Routes>
-          </Router>
+          <ThemeProvider.ThemeProvider>
+            <Router>
+              <UserProvider>
+                <Routes>
+                  <Route element={<PublicRoute />}>
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/" element={<Navigate to="/toDos" />} />
+                  </Route>
+                  <Route element={<ProtectedRoute />}>
+                    <Route path="/toDos" element={<ListToDo />} />
+                    <Route path="/todo/:id" element={<ToDoEntry />} />
+                    <Route path="/create" element={<ToDoForm />} />
+                    <Route path="/edit/:id" element={<ToDoForm />} />
+                  </Route>
+                </Routes>
+              </UserProvider>
+            </Router>
+          </ThemeProvider.ThemeProvider>
         </ButtonClickedProvider>
       </AuthProvider>
       <ReactQueryDevtools initialIsOpen={false} />
