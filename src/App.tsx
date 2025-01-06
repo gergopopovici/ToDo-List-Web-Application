@@ -13,6 +13,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
 import UserProvider from './components/UserProvider';
 import ThemeProvider from './Contexts/ThemeContext';
+import './i18n';
+import LanguageProvider from './Contexts/LanguageContext';
 
 const queryClient = new QueryClient();
 
@@ -22,23 +24,25 @@ function App() {
       <AuthProvider>
         <ButtonClickedProvider>
           <ThemeProvider.ThemeProvider>
-            <Router>
-              <UserProvider>
-                <Routes>
-                  <Route element={<PublicRoute />}>
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/register" element={<RegisterPage />} />
-                    <Route path="/" element={<Navigate to="/toDos" />} />
-                  </Route>
-                  <Route element={<ProtectedRoute />}>
-                    <Route path="/toDos" element={<ListToDo />} />
-                    <Route path="/todo/:id" element={<ToDoEntry />} />
-                    <Route path="/create" element={<ToDoForm />} />
-                    <Route path="/edit/:id" element={<ToDoForm />} />
-                  </Route>
-                </Routes>
-              </UserProvider>
-            </Router>
+            <LanguageProvider>
+              <Router>
+                <UserProvider>
+                  <Routes>
+                    <Route element={<PublicRoute />}>
+                      <Route path="/login" element={<LoginPage />} />
+                      <Route path="/register" element={<RegisterPage />} />
+                      <Route path="/" element={<Navigate to="/toDos" />} />
+                    </Route>
+                    <Route element={<ProtectedRoute />}>
+                      <Route path="/toDos" element={<ListToDo />} />
+                      <Route path="/todo/:id" element={<ToDoEntry />} />
+                      <Route path="/create" element={<ToDoForm />} />
+                      <Route path="/edit/:id" element={<ToDoForm />} />
+                    </Route>
+                  </Routes>
+                </UserProvider>
+              </Router>
+            </LanguageProvider>
           </ThemeProvider.ThemeProvider>
         </ButtonClickedProvider>
       </AuthProvider>

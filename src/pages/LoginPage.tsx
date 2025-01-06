@@ -3,6 +3,7 @@ import { Box, TextField, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import Confetti from 'react-confetti';
+import { useTranslation } from 'react-i18next';
 import { loginIn } from '../services/LoginService';
 import { Login } from '../models/Login';
 import { useAuth } from '../Contexts/AuthProvider';
@@ -14,6 +15,7 @@ function LoginPage() {
   const [showConfetti, setShowConfetti] = useState(false);
   const navigate = useNavigate();
   const { logedIn } = useAuth();
+  const { t } = useTranslation();
 
   const mutation = useMutation((login: Login) => loginIn(login), {
     onSuccess: () => {
@@ -25,7 +27,7 @@ function LoginPage() {
       }, 1500);
     },
     onError: () => {
-      setError('Invalid username or password');
+      setError(t('loginerror'));
     },
   });
 
@@ -60,26 +62,26 @@ function LoginPage() {
         }}
       >
         <Typography variant="h4" gutterBottom>
-          Login
+          {t('login')}
         </Typography>
         {error && (
           <Typography variant="body2" color="error">
             {error}
           </Typography>
         )}
-        <TextField label="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
+        <TextField label={t('username')} value={username} onChange={(e) => setUsername(e.target.value)} required />
         <TextField
-          label="Password"
+          label={t('password')}
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
         <Button type="submit" variant="contained" color="primary" disabled={mutation.isLoading}>
-          Submit
+          {t('submit')}
         </Button>
         <Button variant="contained" color="primary" onClick={() => navigate('/register')}>
-          Register
+          {t('register')}
         </Button>
       </Box>
     </Box>

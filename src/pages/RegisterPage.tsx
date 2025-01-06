@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { createUser } from '../services/UserService';
 
@@ -12,6 +13,7 @@ function RegisterPage() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const mutation = useMutation(
     () =>
@@ -32,11 +34,11 @@ function RegisterPage() {
             (errorMessage as { response?: { data?: { message?: string } } }).response &&
             (errorMessage as { response?: { data?: { message?: string } } }).response?.data &&
             (errorMessage as { response?: { data?: { message?: string } } }).response?.data?.message) ??
-          'Registration was not successful'
+          t('registererror')
         ) {
           setError((errorMessage as { response: { data: { message: string } } }).response.data.message);
         } else {
-          setError('Registration was not successful');
+          setError(t('registererror'));
         }
       },
     },
@@ -45,7 +47,7 @@ function RegisterPage() {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setError(t('passwordmatcherror'));
       return;
     }
     mutation.mutate();
@@ -76,40 +78,45 @@ function RegisterPage() {
         }}
       >
         <Typography variant="h4" gutterBottom>
-          Register
+          {t('register')}
         </Typography>
         {error && (
           <Typography variant="body2" color="error">
             {error}
           </Typography>
         )}
-        <TextField label="Username" variant="outlined" value={username} onChange={(e) => setUsername(e.target.value)} />
         <TextField
-          label="Password"
+          label={t('username')}
+          variant="outlined"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <TextField
+          label={t('password')}
           variant="outlined"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
         <TextField
-          label="Confirm Password"
+          label={t('confirmpassword')}
           variant="outlined"
           type="password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
-        <TextField label="Email" variant="outlined" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <TextField label={t('email')} variant="outlined" value={email} onChange={(e) => setEmail(e.target.value)} />
         <TextField
-          label="Telephone Number"
+          label={t('phonenumber')}
           variant="outlined"
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
         />
         <Button type="submit" variant="contained">
-          Register
+          {t('submit')}
         </Button>
         <Button variant="contained" onClick={() => navigate('/login')}>
-          Login
+          {t('login')}
         </Button>
       </Box>
     </Box>

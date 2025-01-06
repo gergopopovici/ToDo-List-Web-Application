@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery, useMutation } from 'react-query';
 import { Box, TextField, Button, Typography } from '@mui/material';
 import { format } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 import { getToDo, createToDo, updateToDo } from '../services/ToDoService';
 import { RequestToDoDTO, ResponseToDoDTO } from '../models/ToDo';
 import { useUser } from '../components/UserProvider';
@@ -16,6 +17,7 @@ function ToDoForm() {
   const [priority, setPriority] = useState(1);
   const [priorityError, setPriorityError] = useState('');
   const { user } = useUser();
+  const { t } = useTranslation();
 
   const { isLoading } = useQuery<ResponseToDoDTO>(['todo', id], () => getToDo(id!), {
     enabled: !!id,
@@ -83,12 +85,17 @@ function ToDoForm() {
       }}
     >
       <Typography variant="h4" gutterBottom>
-        {id ? 'Edit ToDo' : 'Create ToDo'}
+        {id ? t('todoeditpage') : t('todocreatepage')}
       </Typography>
-      <TextField label="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
-      <TextField label="Description" value={description} onChange={(e) => setDescription(e.target.value)} required />
+      <TextField label={t('todotitle')} value={title} onChange={(e) => setTitle(e.target.value)} required />
       <TextField
-        label="Due Date"
+        label={t('tododescription')}
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        required
+      />
+      <TextField
+        label={t('tododuedate')}
         value={dueDate}
         onChange={(e) => setDueDate(e.target.value)}
         required
@@ -98,7 +105,7 @@ function ToDoForm() {
         }}
       />
       <TextField
-        label="Priority"
+        label={t('todopriority')}
         type="number"
         value={priority}
         onChange={(e) => setPriority(Number(e.target.value))}
@@ -112,7 +119,7 @@ function ToDoForm() {
         color="primary"
         disabled={createMutation.isLoading || updateMutation.isLoading}
       >
-        {id ? 'Update' : 'Create'}
+        {id ? t('todoedit') : t('todocreate')}
       </Button>
     </Box>
   );

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
+import { useTranslation } from 'react-i18next';
 import { Box, Typography, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
@@ -14,6 +15,7 @@ function ListToDo() {
   const { deleteTodoButtonClicked, setDeleteTodoButtonClicked } = useButtonClickedContext();
   const navigate = useNavigate();
   const { user } = useUser();
+  const { t } = useTranslation();
   const userId = user?.id;
   const {
     data: todos,
@@ -53,7 +55,7 @@ function ListToDo() {
   return (
     <Box sx={{ padding: 2 }}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Typography variant="h3">My ToDos</Typography>
+        <Typography variant="h3">{t('title')}</Typography>
       </Box>
       <Box display="flex" flexWrap="wrap" gap={2}>
         {todos?.map((todo) => (

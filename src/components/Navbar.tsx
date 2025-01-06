@@ -1,8 +1,10 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, IconButton } from '@mui/material';
+import { AppBar, Toolbar, Typography, IconButton, Box } from '@mui/material';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import ThemeSwitcher from './ThemeSwitcher';
+import LanguageSwitcher from './LanguageSwitcher';
 
 interface NavbarProps {
   username: string;
@@ -11,6 +13,7 @@ interface NavbarProps {
 
 function Navbar({ username, onSignOut }: NavbarProps) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSignOut = () => {
     onSignOut();
@@ -21,9 +24,12 @@ function Navbar({ username, onSignOut }: NavbarProps) {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Welcome {username || ''}
+          {t('welcome')} {username || ''}
         </Typography>
-        <ThemeSwitcher />
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <ThemeSwitcher />
+          <LanguageSwitcher />
+        </Box>
         {username && (
           <IconButton color="inherit" onClick={handleSignOut}>
             <ExitToAppIcon />
@@ -33,4 +39,5 @@ function Navbar({ username, onSignOut }: NavbarProps) {
     </AppBar>
   );
 }
+
 export { Navbar };
