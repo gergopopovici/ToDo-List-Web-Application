@@ -60,14 +60,14 @@ function ToDoForm() {
 
   useEffect(() => {
     if (priority < 1 || priority > 3) {
-      setPriorityError('Priority must be between 1 and 3');
+      setPriorityError(t('priorityerror'));
     } else {
       setPriorityError('');
     }
   }, [priority]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>{t('loading')}</div>;
   }
 
   return (

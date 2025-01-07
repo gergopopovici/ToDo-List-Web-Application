@@ -41,11 +41,11 @@ function ListToDo() {
   }, [deleteTodoButtonClicked, queryClient, setDeleteTodoButtonClicked]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>{t('loading')}</div>;
   }
 
   if (error) {
-    return <div>Error loading toDos</div>;
+    return <div>{t('errorloadingtodo')}</div>;
   }
 
   const handleAddClick = () => {

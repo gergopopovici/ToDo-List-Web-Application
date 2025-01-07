@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { IconButton, Box, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useQueryClient } from 'react-query';
+import { useTranslation } from 'react-i18next';
 import { useButtonClickedContext } from '../../Contexts/ButtonClickedProvider';
 import { destroyToDo } from '../../services/ToDoService';
 import { useUser } from '../UserProvider';
@@ -16,6 +17,7 @@ export function DeleteToDoIcon({ id, onDelete }: DeleteToDoProps) {
   const [binIconClicked, setBinIconClicked] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const { user } = useUser();
+  const { t } = useTranslation();
 
   const handleBinClick = (event: React.MouseEvent) => {
     event.stopPropagation();
@@ -34,7 +36,7 @@ export function DeleteToDoIcon({ id, onDelete }: DeleteToDoProps) {
         if (user?.id !== undefined) {
           await destroyToDo(id, user.id);
         } else {
-          throw new Error('User ID is undefined');
+          throw new Error(t('useridunidentified'));
         }
         setBinIconClicked(false);
         setDeleteTodoButtonClicked(true);
@@ -43,7 +45,7 @@ export function DeleteToDoIcon({ id, onDelete }: DeleteToDoProps) {
       }
     } catch (error: unknown) {
       const errorMessage = (error as { response?: { data: string } }).response?.data || 'Unknown error occurred';
-      console.log(`An error occurred while deleting the ToDo with ID ${id}: ${errorMessage}`);
+      console.error(errorMessage);
     }
   };
 
@@ -53,11 +55,11 @@ export function DeleteToDoIcon({ id, onDelete }: DeleteToDoProps) {
         <DeleteIcon />
       </IconButton>
       <Dialog open={binIconClicked} onClose={handleBinCancel}>
-        <DialogTitle>Delete ToDo</DialogTitle>
-        <DialogContent>Are you sure you want to delete this ToDo entry?</DialogContent>
+        <DialogTitle>{t('deletetodotitle')}</DialogTitle>
+        <DialogContent>{t('deletetododialogcontent')}</DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteToDo}>Yes</Button>
-          <Button onClick={handleBinCancel}>No</Button>
+          <Button onClick={handleDeleteToDo}>{t('dialogyes')}</Button>
+          <Button onClick={handleBinCancel}>{t('dialogno')}</Button>
         </DialogActions>
       </Dialog>
     </Box>

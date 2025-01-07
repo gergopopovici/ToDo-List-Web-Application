@@ -48,7 +48,7 @@ export const lightTheme = createTheme({
       styleOverrides: {
         root: {
           color: '#ffffff',
-          backgroundColor: 'primary.main',
+          backgroundColor: '#1976d2',
           '&:hover': {
             backgroundColor: '#115293',
           },

@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent, Typography, Box, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 import EditIcon from '@mui/icons-material/Edit';
 import { DeleteToDoIcon } from '../buttons/DeleteToDoIcon';
 
@@ -15,6 +16,7 @@ interface ToDoCardProps {
 function ToDoCard({ id, title, date, priority }: ToDoCardProps) {
   const navigate = useNavigate();
 
+  const { t } = useTranslation();
   const handleCardClick = () => {
     navigate(`/todo/${id}`);
   };
@@ -59,10 +61,10 @@ function ToDoCard({ id, title, date, priority }: ToDoCardProps) {
           {title}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          <strong>Due:</strong> {todoDate}
+          <strong>{t('tododuedate')}:</strong> {todoDate}
         </Typography>
         <Typography variant="body2" color={getPriorityColor(priority)}>
-          <strong>Priority:</strong> {priority}
+          <strong>{t('todopriority')}:</strong> {priority}
         </Typography>
       </CardContent>
       <Box

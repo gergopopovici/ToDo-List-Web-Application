@@ -2,6 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { Box, Typography, IconButton, Paper } from '@mui/material';
 import { format } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 import EditIcon from '@mui/icons-material/Edit';
 import { getToDo } from '../services/ToDoService';
 import { ResponseToDoDTO } from '../models/ToDo';
@@ -10,15 +11,16 @@ import { DeleteToDoIcon } from '../components/buttons/DeleteToDoIcon';
 function ToDoEntry() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   if (!id) {
-    throw new Error('No id provided');
+    throw new Error(t('noidprovided'));
   }
   const { data: todo, error, isLoading } = useQuery<ResponseToDoDTO>(['todo', id], () => getToDo(id));
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>{t('loading')}</div>;
   }
   if (error) {
-    return <div>Error loading todo</div>;
+    return <div>{t('errorloadingtodo')}</div>;
   }
   const todoDate = todo?.date ? format(new Date(todo.date), 'dd-MM-yyyy') : 'Invalid date';
 
@@ -56,14 +58,14 @@ function ToDoEntry() {
           </IconButton>
           {todo?.id !== undefined && <DeleteToDoIcon id={todo.id} onDelete={handleDelete} />}
         </Box>
-        <Typography variant="body1" gutterBottom sx={{ marginTop: 2 }}>
-          <strong>Description:</strong> {todo?.description}
+        <Typography variant="body1" gutterBottom sx={{ marginTop: 2, textAlign: 'justify', hyphens: 'auto' }}>
+          <strong>{t('tododescription')}:</strong> {todo?.description}
         </Typography>
         <Typography variant="body1" gutterBottom>
-          <strong>Due Date:</strong> {todoDate}
+          <strong>{t('tododuedate')}:</strong> {todoDate}
         </Typography>
         <Typography variant="body1" sx={{ color: getPriorityColor(todo?.priority) }}>
-          <strong>Priority:</strong> {todo?.priority}
+          <strong>{t('todopriority')}:</strong> {todo?.priority}
         </Typography>
       </Paper>
     </Box>
