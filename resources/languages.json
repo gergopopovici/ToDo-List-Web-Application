@@ -33,7 +33,10 @@
             "deletetodotitle": "Delete ToDo",
             "deletetododialogcontent": "Are you sure you want to delete this ToDo entry?",
             "dialogyes": "Yes",
-            "dialogno": "No"
+            "dialogno": "No",
+            "taskcreatepage": "Create Task",
+            "taskdescription": "Description",
+            "addtask": "Add Task"
           }
         },
         "hu": {
@@ -70,7 +73,10 @@
             "deletetodotitle": "Teendő Törlése",
             "deletetododialogcontent": "Biztosan törölni szeretné ezt a teendőbejegyzést?",
             "dialogyes": "Igen",
-            "dialogno": "Nem"
+            "dialogno": "Nem",
+            "taskcreatepage": "Feladat Létrehozása",
+            "taskdescription": "Leírás",
+            "addtask": "Feladat Hozzáadása"
           }
         },
         "ro": {
@@ -107,7 +113,10 @@
             "deletetodotitle": "Șterge Sarcina",
             "deletetododialogcontent": "Sigur doriți să ștergeți această intrare de sarcină?",
             "dialogyes": "Da",
-            "dialogno": "Nu"
+            "dialogno": "Nu",
+            "taskcreatepage": "Creează Sarcină",
+            "taskdescription": "Descriere",
+            "addtask": "Adaugă Sarcină"
           }
         }
       }

@@ -28,7 +28,7 @@ function Navbar({ username, onSignOut }: NavbarProps) {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="sticky" sx={{ height: '64px' }}>
       <Toolbar>
         {!isHomePage && !isLoginPage && (
           <IconButton color="inherit" onClick={handleFrontPage} sx={{ mr: 2 }}>
