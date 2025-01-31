@@ -53,7 +53,7 @@ function ListToDo() {
   };
 
   return (
-    <Box sx={{ padding: 2 }}>
+    <Box sx={{ padding: 2, backgroundColor: (theme) => theme.palette.background.default, minHeight: '100vh' }}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h3">{t('title')}</Typography>
       </Box>
@@ -84,6 +84,7 @@ function ListToDo() {
           },
         }}
         onClick={handleAddClick}
+        title={t('todocreatepage')}
       >
         <AddIcon />
       </IconButton>

@@ -70,13 +70,18 @@ function ToDoEntry() {
   const handleClose = () => setOpen(false);
 
   return (
-    <Box sx={{ padding: 2 }}>
-      <Paper elevation={3} sx={{ padding: 4, maxWidth: 800, margin: '0 auto' }}>
+    <Box sx={{ padding: 2, backgroundColor: (theme) => theme.palette.background.default, minHeight: '100vh' }}>
+      <Paper elevation={3} sx={{ padding: 4, maxWidth: 800, margin: '0 auto', position: 'relative' }}>
         <Typography variant="h4" gutterBottom>
           {todo?.title}
         </Typography>
         <Box display="flex" alignItems="center" gap={2}>
-          <IconButton aria-label="edit" onClick={handleEditClick} sx={{ '&:hover': { color: 'blue' } }}>
+          <IconButton
+            aria-label="edit"
+            onClick={handleEditClick}
+            sx={{ '&:hover': { color: 'blue' } }}
+            title={t('todoeditpage')}
+          >
             <EditIcon />
           </IconButton>
           {todo?.id !== undefined && <DeleteToDoIcon id={todo.id} onDelete={handleDelete} />}
@@ -92,7 +97,7 @@ function ToDoEntry() {
         </Typography>
         <Box sx={{ marginTop: 4 }}>
           <Typography variant="h6" gutterBottom>
-            {t('tasks')}
+            {t('taskstitle')}
           </Typography>
           {tasks?.map((task) => (
             <Paper key={task.id} elevation={1} sx={{ padding: 2, marginBottom: 2 }}>
@@ -103,7 +108,9 @@ function ToDoEntry() {
             onClick={handleOpen}
             title={t('addtask')}
             sx={{
-              marginLeft: 'auto',
+              position: 'absolute',
+              bottom: 3,
+              right: 16,
               backgroundColor: 'green',
               color: 'white',
               '&:hover': { backgroundColor: 'darkgreen' },

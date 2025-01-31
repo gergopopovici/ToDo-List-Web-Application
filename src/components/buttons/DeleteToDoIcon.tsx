@@ -51,7 +51,12 @@ export function DeleteToDoIcon({ id, onDelete }: DeleteToDoProps) {
 
   return (
     <Box>
-      <IconButton aria-label="delete" onClick={handleBinClick} sx={{ '&:hover': { color: 'red' } }}>
+      <IconButton
+        aria-label="delete"
+        onClick={handleBinClick}
+        sx={{ '&:hover': { color: 'red' } }}
+        title={t('deletetodotitle')}
+      >
         <DeleteIcon />
       </IconButton>
       <Dialog open={binIconClicked} onClose={handleBinCancel}>

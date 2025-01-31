@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Box, TextField, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
-import Confetti from 'react-confetti';
 import { useTranslation } from 'react-i18next';
 import { loginIn } from '../services/LoginService';
 import { Login } from '../models/Login';
@@ -12,16 +11,13 @@ function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [showConfetti, setShowConfetti] = useState(false);
   const navigate = useNavigate();
   const { logedIn } = useAuth();
   const { t } = useTranslation();
 
   const mutation = useMutation((login: Login) => loginIn(login), {
     onSuccess: () => {
-      setShowConfetti(true);
       setTimeout(() => {
-        setShowConfetti(false);
         navigate('/toDos');
         logedIn();
       }, 1500);
@@ -43,11 +39,10 @@ function LoginPage() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '100vh',
-        backgroundColor: '#f0f0f0',
+        backgroundColor: (theme) => theme.palette.background.default,
+        minHeight: '100vh',
       }}
     >
-      {showConfetti && <Confetti />}
       <Box
         component="form"
         onSubmit={handleSubmit}
@@ -56,9 +51,9 @@ function LoginPage() {
           flexDirection: 'column',
           gap: 2,
           padding: 3,
-          backgroundColor: 'white',
           borderRadius: 1,
           boxShadow: 1,
+          backgroundColor: (theme) => theme.palette.background.default,
         }}
       >
         <Typography variant="h4" gutterBottom>

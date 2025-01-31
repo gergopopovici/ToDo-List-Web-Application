@@ -42,9 +42,9 @@ function TaskForm({ todoId, onClose, refetchTasks }: TaskFormProps) {
         flexDirection: 'column',
         gap: 2,
         padding: 3,
-        backgroundColor: 'white',
         borderRadius: 1,
         boxShadow: 1,
+        backgroundColor: (theme) => theme.palette.background.default,
       }}
     >
       <Typography variant="h4" gutterBottom>

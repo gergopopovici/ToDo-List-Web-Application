@@ -83,9 +83,10 @@ function ToDoForm() {
         flexDirection: 'column',
         gap: 2,
         padding: 3,
-        backgroundColor: 'white',
         borderRadius: 1,
         boxShadow: 1,
+        backgroundColor: (theme) => theme.palette.background.default,
+        minHeight: '100vh',
       }}
     >
       <Typography variant="h4" gutterBottom>

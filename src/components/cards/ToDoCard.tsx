@@ -79,7 +79,12 @@ function ToDoCard({ id, title, date, priority }: ToDoCardProps) {
           gap: '10px',
         }}
       >
-        <IconButton aria-label="edit" onClick={handleEditClick} sx={{ '&:hover': { color: 'blue' } }}>
+        <IconButton
+          aria-label="edit"
+          onClick={handleEditClick}
+          sx={{ '&:hover': { color: 'blue' } }}
+          title={t('todoeditpage')}
+        >
           <EditIcon />
         </IconButton>
         <DeleteToDoIcon id={id} onDelete={() => {}} />

@@ -12,10 +12,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const userId = document.cookie.split('; ').find((row) => row.startsWith('userId='));
-    if (userId) {
-      setIsAuthenticated(true);
-    }
+    const checkAuth = () => {
+      const userId = document.cookie.split('; ').find((row) => row.startsWith('userId='));
+      if (userId) {
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+      }
+    };
+
+    checkAuth();
+    const interval = setInterval(checkAuth, 1000);
+    return () => clearInterval(interval);
   }, []);
 
   const logedIn = () => setIsAuthenticated(true);

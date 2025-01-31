@@ -60,21 +60,21 @@ function RegisterPage() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '100vh',
-        backgroundColor: '#f0f0f0',
+        backgroundColor: (theme) => theme.palette.background.default,
       }}
     >
       <Box
         component="form"
         onSubmit={handleSubmit}
         sx={{
+          marginTop: 5,
           display: 'flex',
           flexDirection: 'column',
           gap: 2,
           padding: 3,
-          backgroundColor: 'white',
           borderRadius: 1,
           boxShadow: 1,
+          backgroundColor: (theme) => theme.palette.background.default,
         }}
       >
         <Typography variant="h4" gutterBottom>
