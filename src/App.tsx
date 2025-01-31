@@ -9,12 +9,11 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ButtonClickedProvider from './Contexts/ButtonClickedProvider';
 import { AuthProvider } from './Contexts/AuthProvider';
-import ProtectedRoute from './components/ProtectedRoute';
-import PublicRoute from './components/PublicRoute';
 import UserProvider from './components/UserProvider';
 import ThemeProvider from './Contexts/ThemeContext';
 import './i18n';
 import LanguageProvider from './Contexts/LanguageContext';
+import { RedirectHandler } from './hooks/RedirectHandler';
 
 const queryClient = new QueryClient();
 
@@ -27,18 +26,14 @@ function App() {
             <LanguageProvider>
               <Router>
                 <UserProvider>
+                  <RedirectHandler />
                   <Routes>
-                    <Route element={<PublicRoute />}>
-                      <Route path="/login" element={<LoginPage />} />
-                      <Route path="/register" element={<RegisterPage />} />
-                      <Route path="/" element={<Navigate to="/toDos" />} />
-                    </Route>
-                    <Route element={<ProtectedRoute />}>
-                      <Route path="/toDos" element={<ListToDo />} />
-                      <Route path="/todo/:id" element={<ToDoEntry />} />
-                      <Route path="/create" element={<ToDoForm />} />
-                      <Route path="/edit/:id" element={<ToDoForm />} />
-                    </Route>
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/" element={<Navigate to="/toDos" />} />
+                    <Route path="/toDos" element={<ListToDo />} />
+                    <Route path="/todo/:id" element={<ToDoEntry />} />
+                    <Route path="/create" element={<ToDoForm />} />
                   </Routes>
                 </UserProvider>
               </Router>
