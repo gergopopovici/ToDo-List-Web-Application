@@ -1,3 +1,8 @@
+type Task = {
+  id: number;
+  description: string;
+};
+
 export interface ToDo {
   id?: number;
   title: string;
@@ -5,6 +10,7 @@ export interface ToDo {
   date: Date;
   priority: number;
   userId: number;
+  tasks?: Task[];
 }
 export interface RequestToDoDTO {
   title: string;
@@ -12,6 +18,7 @@ export interface RequestToDoDTO {
   date: Date;
   priority: number;
   userId: number;
+  tasks?: Task[];
 }
 export interface ResponseToDoDTO {
   id: number;
@@ -20,4 +27,5 @@ export interface ResponseToDoDTO {
   date: Date;
   priority: number;
   userId: number;
+  tasks?: Task[];
 }

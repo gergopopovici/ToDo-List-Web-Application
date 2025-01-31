@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { getToDo, createToDo, updateToDo } from '../services/ToDoService';
 import { RequestToDoDTO, ResponseToDoDTO } from '../models/ToDo';
 import { useUser } from '../components/UserProvider';
+import { Task } from '../models/Task';
 
 function ToDoForm() {
   const { id } = useParams<{ id: string }>();
@@ -16,6 +17,7 @@ function ToDoForm() {
   const [dueDate, setDueDate] = useState('');
   const [priority, setPriority] = useState(1);
   const [priorityError, setPriorityError] = useState('');
+  const [tasks, setTasks] = useState<Task[]>([]);
   const { user } = useUser();
   const { t } = useTranslation();
 
@@ -26,6 +28,7 @@ function ToDoForm() {
       setDescription(data.description);
       setDueDate(format(new Date(data.date), 'yyyy-MM-dd'));
       setPriority(data.priority);
+      setTasks((data.tasks || []).map((task) => ({ ...task, id: task.id ?? 0, toDo: data })));
     },
   });
 
@@ -49,6 +52,7 @@ function ToDoForm() {
       date: new Date(dueDate),
       priority,
       userId: user!.id,
+      tasks: tasks.map((task) => ({ ...task, id: task.id ?? 0 })),
     };
 
     if (id) {

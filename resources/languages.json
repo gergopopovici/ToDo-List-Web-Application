@@ -1,6 +1,8 @@
  {
         "en": {
           "translation": {
+            "home": "Home",
+            "signout":"Sign Out",
             "welcome": "Hello",
             "light_mode": "Light Theme",
             "dark_mode": "Dark Theme",
@@ -34,13 +36,18 @@
             "deletetododialogcontent": "Are you sure you want to delete this ToDo entry?",
             "dialogyes": "Yes",
             "dialogno": "No",
+            "taskstitle":"Tasks",
             "taskcreatepage": "Create Task",
             "taskdescription": "Description",
-            "addtask": "Add Task"
+            "addtask": "Add Task",
+            "dialogdeletetasktitle":"Delete Task",
+            "dialogdeletetaskcontent":"Are you sure you want to delete this task?"
           }
         },
         "hu": {
           "translation": {
+            "home": "Kezdőlap",
+            "signout":"Kijelentkezés",
             "welcome": "Szia",
             "light_mode": "Világos Mód",
             "dark_mode": "Sötét Mód",
@@ -74,13 +81,18 @@
             "deletetododialogcontent": "Biztosan törölni szeretné ezt a teendőbejegyzést?",
             "dialogyes": "Igen",
             "dialogno": "Nem",
+            "taskstitle":"Feladatok",
             "taskcreatepage": "Feladat Létrehozása",
             "taskdescription": "Leírás",
-            "addtask": "Feladat Hozzáadása"
+            "addtask": "Feladat Hozzáadása",
+            "dialogdeletetasktitle":"Feladat Törlése",
+            "dialogdeletetaskcontent":"Biztosan törölni szeretné ezt a feladatot?"
           }
         },
         "ro": {
           "translation": {
+            "home": "Acasă",
+            "signout":"Deconectare",
             "welcome": "Salut",
             "light_mode": "Temă Luminoasă",
             "dark_mode": "Temă Întunecată",
@@ -114,9 +126,12 @@
             "deletetododialogcontent": "Sigur doriți să ștergeți această intrare de sarcină?",
             "dialogyes": "Da",
             "dialogno": "Nu",
+            "taskstitle":"Sarcini",
             "taskcreatepage": "Creează Sarcină",
             "taskdescription": "Descriere",
-            "addtask": "Adaugă Sarcină"
+            "addtask": "Adaugă Sarcină",
+            "dialogdeletetasktitle":"Șterge Sarcina",
+            "dialogdeletetaskcontent":"Sigur doriți să ștergeți această sarcină?"
           }
         }
       }

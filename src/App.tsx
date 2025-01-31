@@ -13,7 +13,7 @@ import UserProvider from './components/UserProvider';
 import ThemeProvider from './Contexts/ThemeContext';
 import './i18n';
 import LanguageProvider from './Contexts/LanguageContext';
-import { RedirectHandler } from './hooks/RedirectHandler';
+import { UserRedirect } from './hooks/userRedirect';
 
 const queryClient = new QueryClient();
 
@@ -26,7 +26,7 @@ function App() {
             <LanguageProvider>
               <Router>
                 <UserProvider>
-                  <RedirectHandler />
+                  <UserRedirect />
                   <Routes>
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
@@ -34,6 +34,7 @@ function App() {
                     <Route path="/toDos" element={<ListToDo />} />
                     <Route path="/todo/:id" element={<ToDoEntry />} />
                     <Route path="/create" element={<ToDoForm />} />
+                    <Route path="/edit/:id" element={<ToDoForm />} />
                   </Routes>
                 </UserProvider>
               </Router>

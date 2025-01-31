@@ -28,10 +28,10 @@ function Navbar({ username, onSignOut }: NavbarProps) {
   };
 
   return (
-    <AppBar position="sticky" sx={{ height: '64px' }}>
+    <AppBar position="sticky" sx={{ height: '64px', width: '100%' }}>
       <Toolbar>
         {!isHomePage && !isLoginPage && (
-          <IconButton color="inherit" onClick={handleFrontPage} sx={{ mr: 2 }}>
+          <IconButton color="inherit" onClick={handleFrontPage} sx={{ mr: 2 }} title={t('home')}>
             <HomeIcon />
           </IconButton>
         )}
@@ -43,7 +43,7 @@ function Navbar({ username, onSignOut }: NavbarProps) {
           <LanguageSwitcher />
         </Box>
         {username && (
-          <IconButton color="inherit" onClick={handleSignOut}>
+          <IconButton color="inherit" onClick={handleSignOut} title={t('signout')}>
             <ExitToAppIcon />
           </IconButton>
         )}

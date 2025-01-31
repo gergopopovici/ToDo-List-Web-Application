@@ -70,16 +70,8 @@ function ToDoEntry() {
   const handleClose = () => setOpen(false);
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: 'calc(100vh - 64px)',
-        overflow: 'auto',
-      }}
-    >
-      <Paper elevation={3} sx={{ marginTop: 50, padding: 4, maxWidth: 600, width: '100%' }}>
+    <Box sx={{ padding: 2 }}>
+      <Paper elevation={3} sx={{ padding: 4, maxWidth: 800, margin: '0 auto' }}>
         <Typography variant="h4" gutterBottom>
           {todo?.title}
         </Typography>
@@ -98,7 +90,7 @@ function ToDoEntry() {
         <Typography variant="body1" sx={{ color: getPriorityColor(todo?.priority) }}>
           <strong>{t('todopriority')}:</strong> {todo?.priority}
         </Typography>
-        <Box sx={{ marginTop: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ marginTop: 4 }}>
           <Typography variant="h6" gutterBottom>
             {t('tasks')}
           </Typography>

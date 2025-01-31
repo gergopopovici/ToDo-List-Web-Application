@@ -18,7 +18,7 @@ function ListToDo() {
   const { t } = useTranslation();
   const userId = user?.id;
   const {
-    data: todos,
+    data: todos = [],
     error,
     isLoading,
   } = useQuery<ResponseToDoDTO[]>(['todos', userId], () => getToDosByUser(userId!), {

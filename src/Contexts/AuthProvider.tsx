@@ -21,7 +21,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logedIn = () => setIsAuthenticated(true);
   const logout = () => {
     setIsAuthenticated(false);
-    document.cookie = 'userId=; Max-Age=0; path=/'; // Clear the cookie
+    document.cookie = 'userId=; Max-Age=0; path=/';
   };
 
   const value = React.useMemo(() => ({ isAuthenticated, logedIn, logout }), [isAuthenticated]);
