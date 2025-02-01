@@ -1,17 +1,18 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, IconButton, Box } from '@mui/material';
+import { AppBar, Toolbar, Typography, IconButton, Box, Button } from '@mui/material';
 import { ExitToApp as ExitToAppIcon, Home as HomeIcon } from '@mui/icons-material';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import ThemeSwitcher from './ThemeSwitcher';
 import LanguageSwitcher from './LanguageSwitcher';
 
 interface NavbarProps {
   username: string;
+  admin: boolean;
   onSignOut: () => void;
 }
 
-function Navbar({ username, onSignOut }: NavbarProps) {
+function Navbar({ username, admin, onSignOut }: NavbarProps) {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const location = useLocation();
@@ -39,6 +40,11 @@ function Navbar({ username, onSignOut }: NavbarProps) {
           {t('welcome')} {username || ''}
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          {admin && (
+            <Button component={Link} to="/users" color="inherit" sx={{ textTransform: 'none' }}>
+              {t('users')}
+            </Button>
+          )}
           <ThemeSwitcher />
           <LanguageSwitcher />
         </Box>

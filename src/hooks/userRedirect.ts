@@ -8,16 +8,20 @@ export function UserRedirect() {
   const { isAuthenticated } = useAuth();
 
   useEffect(() => {
+    console.log('Is authenticated:', isAuthenticated);
+  }, [isAuthenticated]);
+
+  useEffect(() => {
     if (!isAuthenticated && location.pathname !== '/login' && location.pathname !== '/register') {
       navigate('/login');
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, location.pathname]);
 
   useEffect(() => {
-    const { pathname } = location;
-    if (isAuthenticated && (pathname === '/login' || pathname === '/register')) {
-      navigate('/');
+    if (isAuthenticated && (location.pathname === '/login' || location.pathname === '/register')) {
+      navigate('/todos');
     }
-  }, [location, navigate, isAuthenticated]);
+  }, [location.pathname, navigate, isAuthenticated]);
+
   return null;
 }

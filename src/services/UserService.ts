@@ -22,7 +22,7 @@ export const updateUser = async (userId: string, newUser: RequestUserDTO): Promi
   return response.data;
 };
 
-export const destroyUser = async (userId: string): Promise<void> => {
-  const response = await axios.delete(`${userApiUrl}/${userId}`, { withCredentials: true });
+export const destroyUser = async (adminId: string, userId: string): Promise<void> => {
+  const response = await axios.delete(`${userApiUrl}/${adminId}/${userId}`, { withCredentials: true });
   return response.data;
 };

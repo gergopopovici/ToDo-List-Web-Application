@@ -14,6 +14,7 @@ import ThemeProvider from './Contexts/ThemeContext';
 import './i18n';
 import LanguageProvider from './Contexts/LanguageContext';
 import { UserRedirect } from './hooks/userRedirect';
+import ListUsers from './pages/ListUsers';
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ function App() {
                     <Route path="/todo/:id" element={<ToDoEntry />} />
                     <Route path="/create" element={<ToDoForm />} />
                     <Route path="/edit/:id" element={<ToDoForm />} />
+                    <Route path="/users" element={<ListUsers />} />
                   </Routes>
                 </UserProvider>
               </Router>

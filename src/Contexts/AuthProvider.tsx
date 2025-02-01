@@ -10,15 +10,13 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkAuth = () => {
       const userId = document.cookie.split('; ').find((row) => row.startsWith('userId='));
-      if (userId) {
-        setIsAuthenticated(true);
-      } else {
-        setIsAuthenticated(false);
-      }
+      setIsAuthenticated(!!userId);
+      setLoading(false);
     };
 
     checkAuth();
@@ -33,6 +31,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const value = React.useMemo(() => ({ isAuthenticated, logedIn, logout }), [isAuthenticated]);
+
+  if (loading) return <div>Loading...</div>;
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

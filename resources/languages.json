@@ -41,7 +41,13 @@
             "taskdescription": "Description",
             "addtask": "Add Task",
             "dialogdeletetasktitle":"Delete Task",
-            "dialogdeletetaskcontent":"Are you sure you want to delete this task?"
+            "dialogdeletetaskcontent":"Are you sure you want to delete this task?",
+            "tableusername":"Username",
+            "tabledeleteoperation":"Delete User",
+            "tableuserlist":"Users List",
+            "errorloadingusers":"Error loading users",
+            "users":"Users"
+
           }
         },
         "hu": {
@@ -86,7 +92,12 @@
             "taskdescription": "Leírás",
             "addtask": "Feladat Hozzáadása",
             "dialogdeletetasktitle":"Feladat Törlése",
-            "dialogdeletetaskcontent":"Biztosan törölni szeretné ezt a feladatot?"
+            "dialogdeletetaskcontent":"Biztosan törölni szeretné ezt a feladatot?",
+            "tableusername":"Felhasználónév",
+            "tabledeleteoperation":"Felhasználó Törlése",
+            "tableuserlist":"Felhasználók Listája",
+            "errorloadingusers":"Hiba a felhasználók betöltésekor",
+            "users":"Felhasználók"
           }
         },
         "ro": {
@@ -131,7 +142,13 @@
             "taskdescription": "Descriere",
             "addtask": "Adaugă Sarcină",
             "dialogdeletetasktitle":"Șterge Sarcina",
-            "dialogdeletetaskcontent":"Sigur doriți să ștergeți această sarcină?"
+            "dialogdeletetaskcontent":"Sigur doriți să ștergeți această sarcină?",
+            "tableusername":"Nume de Utilizator",
+            "tabledeleteoperation":"Șterge Utilizator",
+            "tableuserlist":"Listă Utilizatori",
+            "errorloadingusers":"Eroare la încărcarea utilizatorilor",
+            "users":"Utilizatori"
+            
           }
         }
       }

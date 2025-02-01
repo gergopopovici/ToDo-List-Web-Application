@@ -50,7 +50,11 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <UserContext.Provider value={userContextValue}>
-      <Navbar username={isAuthenticated && user ? user.username : ''} onSignOut={handleSignOut} />
+      <Navbar
+        username={isAuthenticated && user ? user.username : ''}
+        admin={isAuthenticated && user ? user.admin : false}
+        onSignOut={handleSignOut}
+      />
       {children}
     </UserContext.Provider>
   );
