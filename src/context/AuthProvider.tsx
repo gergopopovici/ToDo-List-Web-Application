@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -11,6 +12,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const checkAuth = () => {
@@ -32,7 +34,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const value = React.useMemo(() => ({ isAuthenticated, logedIn, logout }), [isAuthenticated]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div>{t('loading')}</div>;
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
