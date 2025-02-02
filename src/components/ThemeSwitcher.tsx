@@ -4,7 +4,7 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import PaletteIcon from '@mui/icons-material/Palette';
 import { useState } from 'react';
-import { useTheme } from '../Contexts/ThemeContext';
+import { useTheme } from '../context/ThemeContext';
 
 function ThemeSwitcher() {
   const themeContext = useTheme();

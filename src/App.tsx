@@ -6,12 +6,12 @@ import ToDoEntry from './pages/ToDoEntry';
 import ToDoForm from './pages/ToDoForm';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import ButtonClickedProvider from './Contexts/ButtonClickedProvider';
-import { AuthProvider } from './Contexts/AuthProvider';
+import ButtonClickedProvider from './context/ButtonClickedProvider';
+import { AuthProvider } from './context/AuthProvider';
 import UserProvider from './components/UserProvider';
-import ThemeProvider from './Contexts/ThemeContext';
+import ThemeProvider from './context/ThemeContext';
 import './i18n';
-import LanguageProvider from './Contexts/LanguageContext';
+import LanguageProvider from './context/LanguageContext';
 import { UserRedirect } from './hooks/userRedirect';
 import ListUsers from './pages/ListUsers';
 

@@ -7,7 +7,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { getToDosByUser } from '../services/ToDoService';
 import { ResponseToDoDTO } from '../models/ToDo';
 import ToDoCard from '../components/cards/ToDoCard';
-import { useButtonClickedContext } from '../Contexts/ButtonClickedProvider';
+import { useButtonClickedContext } from '../context/ButtonClickedProvider';
 import { useUser } from '../components/UserProvider';
 
 function ListToDo() {

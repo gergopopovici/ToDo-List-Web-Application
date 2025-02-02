@@ -5,7 +5,7 @@ import { useMutation } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import { loginIn } from '../services/LoginService';
 import { Login } from '../models/Login';
-import { useAuth } from '../Contexts/AuthProvider';
+import { useAuth } from '../context/AuthProvider';
 
 function LoginPage() {
   const [username, setUsername] = useState('');

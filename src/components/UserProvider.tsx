@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 import { getUserById } from '../services/UserService';
 import { ResponseUserDTO } from '../models/User';
 import { Navbar } from './Navbar';
-import { useAuth } from '../Contexts/AuthProvider';
+import { useAuth } from '../context/AuthProvider';
 
 const getCookieValue = (name: string): string | undefined => {
   const value = `; ${document.cookie}`;

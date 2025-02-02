@@ -1,6 +1,6 @@
 import { Box, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import ReactCountryFlag from 'react-country-flag';
-import { useLanguage } from '../Contexts/LanguageContext';
+import { useLanguage } from '../context/LanguageContext';
 
 function LanguageSwitcher() {
   const { language, changeLanguage } = useLanguage();

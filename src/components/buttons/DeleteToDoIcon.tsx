@@ -3,7 +3,7 @@ import { IconButton, Box, Dialog, DialogTitle, DialogContent, DialogActions, But
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useQueryClient } from 'react-query';
 import { useTranslation } from 'react-i18next';
-import { useButtonClickedContext } from '../../Contexts/ButtonClickedProvider';
+import { useButtonClickedContext } from '../../context/ButtonClickedProvider';
 import { destroyToDo } from '../../services/ToDoService';
 import { useUser } from '../UserProvider';
 

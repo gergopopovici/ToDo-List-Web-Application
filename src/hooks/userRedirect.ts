@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../Contexts/AuthProvider';
+import { useAuth } from '../context/AuthProvider';
 
 export function UserRedirect() {
   const location = useLocation();
