@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import { useTranslation } from 'react-i18next';
-import { Box, Typography, IconButton } from '@mui/material';
+import { Box, Typography, IconButton, TextField, MenuItem, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import { getToDosByUser } from '../services/ToDoService';
@@ -16,22 +16,32 @@ function ListToDo() {
   const navigate = useNavigate();
   const { user } = useUser();
   const { t } = useTranslation();
+
+  const [filters, setFilters] = useState({
+    priority: '',
+    dueDateFrom: '',
+    dueDateTo: '',
+  });
+
+  const [pendingFilters, setPendingFilters] = useState(filters);
+  const [filteredTodos, setFilteredTodos] = useState<ResponseToDoDTO[]>([]);
+
   const userId = user?.id;
+
   const {
     data: todos = [],
     error,
     isLoading,
   } = useQuery<ResponseToDoDTO[]>(['todos', userId], () => getToDosByUser(userId!), {
     enabled: !!userId,
+    onSuccess: (data) => setFilteredTodos(data),
   });
 
   useEffect(() => {
     if (deleteTodoButtonClicked) {
       (async () => {
         try {
-          console.log('Delete todo button clicked:', deleteTodoButtonClicked);
-          await queryClient.invalidateQueries('todos');
-          console.log('ToDos updated after delete');
+          await queryClient.invalidateQueries(['todos']);
           setDeleteTodoButtonClicked(false);
         } catch (errorResponse: unknown) {
           console.error('Error updating todos:', errorResponse);
@@ -39,6 +49,43 @@ function ListToDo() {
       })();
     }
   }, [deleteTodoButtonClicked, queryClient, setDeleteTodoButtonClicked]);
+
+  const handleAddClick = () => {
+    navigate('/create');
+  };
+
+  const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPendingFilters((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value,
+    }));
+  };
+
+  const applyFilters = (filters2: typeof pendingFilters) => {
+    let filtered = todos;
+
+    if (filters2.priority) {
+      filtered = filtered.filter((todo) => String(todo.priority) === filters2.priority);
+    }
+    if (filters2.dueDateFrom) {
+      filtered = filtered.filter((todo) => new Date(todo.date) >= new Date(filters2.dueDateFrom));
+    }
+    if (filters2.dueDateTo) {
+      filtered = filtered.filter((todo) => new Date(todo.date) <= new Date(filters2.dueDateTo));
+    }
+    setFilteredTodos(filtered);
+  };
+
+  const handleApplyFilters = () => {
+    setFilters(pendingFilters);
+    applyFilters(pendingFilters);
+  };
+
+  const handleResetFilters = () => {
+    setPendingFilters({ priority: '', dueDateFrom: '', dueDateTo: '' });
+    setFilters({ priority: '', dueDateFrom: '', dueDateTo: '' });
+    setFilteredTodos(todos);
+  };
 
   if (isLoading) {
     return <div>{t('loading')}</div>;
@@ -48,26 +95,73 @@ function ListToDo() {
     return <div>{t('errorloadingtodo')}</div>;
   }
 
-  const handleAddClick = () => {
-    navigate('/create');
-  };
-
   return (
     <Box sx={{ padding: 2, backgroundColor: (theme) => theme.palette.background.default, minHeight: '100vh' }}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h3">{t('title')}</Typography>
       </Box>
-      <Box display="flex" flexWrap="wrap" gap={2}>
-        {todos?.map((todo) => (
-          <ToDoCard
-            key={todo.id}
-            id={todo.id ?? 0}
-            title={todo.title}
-            date={new Date(todo.date)}
-            priority={todo.priority}
-          />
-        ))}
+
+      <Box display="flex" gap={2} flexWrap="wrap" marginBottom={3} marginTop={3}>
+        <TextField
+          select
+          label={t('todopriority')}
+          name="priority"
+          value={pendingFilters.priority}
+          onChange={handleFilterChange}
+          sx={{ minWidth: 150 }}
+        >
+          <MenuItem value="">{t('all')}</MenuItem>
+          <MenuItem value="1">1</MenuItem>
+          <MenuItem value="2">2</MenuItem>
+          <MenuItem value="3">3</MenuItem>
+        </TextField>
+
+        <TextField
+          type="date"
+          label={t('duedatefrom')}
+          name="dueDateFrom"
+          value={pendingFilters.dueDateFrom}
+          onChange={handleFilterChange}
+          InputLabelProps={{ shrink: true }}
+        />
+
+        <TextField
+          type="date"
+          label={t('duedateto')}
+          name="dueDateTo"
+          value={pendingFilters.dueDateTo}
+          onChange={handleFilterChange}
+          InputLabelProps={{ shrink: true }}
+        />
+
+        <Button variant="contained" onClick={handleApplyFilters} sx={{ height: 40 }}>
+          {t('applyfilters')}
+        </Button>
+        <Button variant="outlined" onClick={handleResetFilters} sx={{ height: 40 }}>
+          {t('resetfilters')}
+        </Button>
       </Box>
+
+      <Box display="flex" flexWrap="wrap" gap={2} marginTop={2}>
+        {filteredTodos.length > 0 ? (
+          filteredTodos.map((todo) => (
+            <ToDoCard
+              key={todo.id}
+              id={todo.id ?? 0}
+              title={todo.title}
+              date={new Date(todo.date)}
+              priority={todo.priority}
+            />
+          ))
+        ) : (
+          <Box display="flex" justifyContent="center" alignItems="center" width="100%" height="50vh">
+            <Typography variant="h6" align="center">
+              {t('notodosfound')}
+            </Typography>
+          </Box>
+        )}
+      </Box>
+
       <IconButton
         color="primary"
         aria-label="add"

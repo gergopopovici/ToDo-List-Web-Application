@@ -39,7 +39,7 @@ function Navbar({ username, admin, onSignOut }: NavbarProps) {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           {t('welcome')} {username || ''}
         </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
           {admin && (
             <Button component={Link} to="/users" color="inherit" sx={{ textTransform: 'none' }}>
               {t('users')}
@@ -47,12 +47,12 @@ function Navbar({ username, admin, onSignOut }: NavbarProps) {
           )}
           <ThemeSwitcher />
           <LanguageSwitcher />
+          {username && (
+            <IconButton color="inherit" onClick={handleSignOut} title={t('signout')}>
+              <ExitToAppIcon />
+            </IconButton>
+          )}
         </Box>
-        {username && (
-          <IconButton color="inherit" onClick={handleSignOut} title={t('signout')}>
-            <ExitToAppIcon />
-          </IconButton>
-        )}
       </Toolbar>
     </AppBar>
   );

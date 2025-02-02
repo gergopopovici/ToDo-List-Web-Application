@@ -11,6 +11,8 @@ import {
   Typography,
   Box,
 } from '@mui/material';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { getUsers, destroyUser } from '../services/UserService';
@@ -21,6 +23,13 @@ function ListUsers() {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { user } = useUser();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user?.admin) {
+      navigate('/');
+    }
+  }, [user, navigate]);
 
   const { data: users = [], error, isLoading } = useQuery<ResponseUserDTO[]>('users', getUsers);
 

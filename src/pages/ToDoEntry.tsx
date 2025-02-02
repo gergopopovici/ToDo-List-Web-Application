@@ -42,7 +42,7 @@ function ToDoEntry() {
     return <div>{t('errorloadingtodo')}</div>;
   }
 
-  const todoDate = todo?.date ? format(new Date(todo.date), 'dd-MM-yyyy') : 'Invalid date';
+  const todoDate = todo?.date;
 
   const handleDelete = () => {
     navigate('/');
@@ -90,7 +90,7 @@ function ToDoEntry() {
           <strong>{t('tododescription')}:</strong> {todo?.description}
         </Typography>
         <Typography variant="body1" gutterBottom>
-          <strong>{t('tododuedate')}:</strong> {todoDate}
+          <strong>{t('tododuedate')}:</strong> {todoDate ? format(new Date(todoDate), 'dd-MM-yyyy') : ''}
         </Typography>
         <Typography variant="body1" sx={{ color: getPriorityColor(todo?.priority) }}>
           <strong>{t('todopriority')}:</strong> {todo?.priority}

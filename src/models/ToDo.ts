@@ -29,3 +29,8 @@ export interface ResponseToDoDTO {
   userId: number;
   tasks?: Task[];
 }
+export interface ToDoFilters {
+  priority?: number | null;
+  dueDateFrom?: Date | null;
+  dueDateTo?: Date | null;
+}

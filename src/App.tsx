@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
 import ListToDo from './pages/ListToDo';
 import ToDoEntry from './pages/ToDoEntry';
 import ToDoForm from './pages/ToDoForm';
@@ -44,7 +43,6 @@ function App() {
           </ThemeProvider.ThemeProvider>
         </ButtonClickedProvider>
       </AuthProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }

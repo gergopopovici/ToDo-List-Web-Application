@@ -46,8 +46,13 @@
             "tabledeleteoperation":"Delete User",
             "tableuserlist":"Users List",
             "errorloadingusers":"Error loading users",
-            "users":"Users"
-
+            "users":"Users",
+            "all":"All",
+            "duedatefrom":"Due Date From",
+            "duedateto":"Due Date To",
+            "applyfilters":"Apply Filters",
+            "resetfilters":"Reset Filters",
+            "notodosfound":"No ToDos found"
           }
         },
         "hu": {
@@ -97,7 +102,13 @@
             "tabledeleteoperation":"Felhasználó Törlése",
             "tableuserlist":"Felhasználók Listája",
             "errorloadingusers":"Hiba a felhasználók betöltésekor",
-            "users":"Felhasználók"
+            "users":"Felhasználók",
+            "all":"Mind",
+            "duedatefrom":"Határidőtől",
+            "duedateto":"Határidőig",
+            "applyfilters":"Szűrők alkalmazása",
+            "resetfilters":"Szűrők visszaállítása",
+            "notodosfound":"Nem található teendő"
           }
         },
         "ro": {
@@ -147,8 +158,13 @@
             "tabledeleteoperation":"Șterge Utilizator",
             "tableuserlist":"Listă Utilizatori",
             "errorloadingusers":"Eroare la încărcarea utilizatorilor",
-            "users":"Utilizatori"
-            
+            "users":"Utilizatori",
+            "all":"Toate",
+            "duedatefrom":"Data Limită De La",
+            "duedateto":"Data Limită Până La",
+            "applyfilters":"Aplică Filtre",
+            "resetfilters":"Resetează Filtre",
+            "notodosfound":"Nu s-au găsit sarcini"
           }
         }
       }
