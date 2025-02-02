@@ -18,6 +18,7 @@ function Navbar({ username, admin, onSignOut }: NavbarProps) {
   const location = useLocation();
   const isHomePage = location.pathname === '/toDos';
   const isLoginPage = location.pathname === '/login';
+  const isRegisterPage = location.pathname === '/register';
 
   const handleSignOut = () => {
     onSignOut();
@@ -31,7 +32,7 @@ function Navbar({ username, admin, onSignOut }: NavbarProps) {
   return (
     <AppBar position="sticky" sx={{ height: '64px', width: '100%' }}>
       <Toolbar>
-        {!isHomePage && !isLoginPage && (
+        {!isHomePage && !isLoginPage && !isRegisterPage && (
           <IconButton color="inherit" onClick={handleFrontPage} sx={{ mr: 2 }} title={t('home')}>
             <HomeIcon />
           </IconButton>
