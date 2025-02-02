@@ -12,6 +12,7 @@ import { ResponseToDoDTO } from '../models/ToDo';
 import { ResponseTaskDTO } from '../models/Task';
 import { DeleteToDoIcon } from '../components/buttons/DeleteToDoIcon';
 import TaskForm from './TaskForm';
+import { DeleteTaskIcon } from '../components/buttons/DeleteTaskIcon';
 
 function ToDoEntry() {
   const { id } = useParams<{ id: string }>();
@@ -102,6 +103,7 @@ function ToDoEntry() {
           {tasks?.map((task) => (
             <Paper key={task.id} elevation={1} sx={{ padding: 2, marginBottom: 2 }}>
               <Typography variant="body2">{task.description}</Typography>
+              <DeleteTaskIcon toDoId={Number(id)} id={task.id} />
             </Paper>
           ))}
           <IconButton
