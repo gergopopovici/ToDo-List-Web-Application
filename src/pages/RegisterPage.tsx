@@ -30,18 +30,8 @@ function RegisterPage() {
         queryClient.invalidateQueries('users');
         navigate('/login');
       },
-      onError: (errorMessage: unknown) => {
-        if (
-          (errorMessage instanceof Error &&
-            (errorMessage as { response?: { data?: { message?: string } } }).response &&
-            (errorMessage as { response?: { data?: { message?: string } } }).response?.data &&
-            (errorMessage as { response?: { data?: { message?: string } } }).response?.data?.message) ??
-          t('registererror')
-        ) {
-          setError((errorMessage as { response: { data: { message: string } } }).response.data.message);
-        } else {
-          setError(t('registererror'));
-        }
+      onError: () => {
+        setError(t('registererror'));
       },
     },
   );
