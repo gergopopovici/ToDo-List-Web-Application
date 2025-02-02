@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
+import { useState } from 'react';
+import { useQuery } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import { Box, Typography, IconButton, TextField, MenuItem, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -7,12 +7,9 @@ import AddIcon from '@mui/icons-material/Add';
 import { getToDosByUser } from '../services/ToDoService';
 import { ResponseToDoDTO } from '../models/ToDo';
 import ToDoCard from '../components/cards/ToDoCard';
-import { useButtonClickedContext } from '../context/ButtonClickedProvider';
 import { useUser } from '../components/UserProvider';
 
 function ListToDo() {
-  const queryClient = useQueryClient();
-  const { deleteTodoButtonClicked, setDeleteTodoButtonClicked } = useButtonClickedContext();
   const navigate = useNavigate();
   const { user } = useUser();
   const { t } = useTranslation();
@@ -36,19 +33,6 @@ function ListToDo() {
     enabled: !!userId,
     onSuccess: (data) => setFilteredTodos(data),
   });
-
-  useEffect(() => {
-    if (deleteTodoButtonClicked) {
-      (async () => {
-        try {
-          await queryClient.invalidateQueries(['todos']);
-          setDeleteTodoButtonClicked(false);
-        } catch (errorResponse: unknown) {
-          console.error('Error updating todos:', errorResponse);
-        }
-      })();
-    }
-  }, [deleteTodoButtonClicked, queryClient, setDeleteTodoButtonClicked]);
 
   const handleAddClick = () => {
     navigate('/create');
@@ -144,15 +128,7 @@ function ListToDo() {
 
       <Box display="flex" flexWrap="wrap" gap={2} marginTop={2}>
         {filteredTodos.length > 0 ? (
-          filteredTodos.map((todo) => (
-            <ToDoCard
-              key={todo.id}
-              id={todo.id ?? 0}
-              title={todo.title}
-              date={new Date(todo.date)}
-              priority={todo.priority}
-            />
-          ))
+          filteredTodos.map((todo) => <ToDoCard key={todo.id} todo={todo} />)
         ) : (
           <Box display="flex" justifyContent="center" alignItems="center" width="100%" height="50vh">
             <Typography variant="h6" align="center">

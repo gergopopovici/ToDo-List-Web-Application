@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, TextField, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { createUser } from '../services/UserService';
 
 function RegisterPage() {
@@ -14,6 +14,7 @@ function RegisterPage() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
 
   const mutation = useMutation(
     () =>
@@ -26,6 +27,7 @@ function RegisterPage() {
       }),
     {
       onSuccess: () => {
+        queryClient.invalidateQueries('users');
         navigate('/login');
       },
       onError: (errorMessage: unknown) => {

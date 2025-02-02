@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { Box, TextField, Button, Typography } from '@mui/material';
 import { format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
@@ -20,6 +20,7 @@ function ToDoForm() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const { user } = useUser();
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
 
   const { isLoading } = useQuery<ResponseToDoDTO>(['todo', id], () => getToDo(id!), {
     enabled: !!id,
@@ -28,18 +29,20 @@ function ToDoForm() {
       setDescription(data.description);
       setDueDate(format(new Date(data.date), 'yyyy-MM-dd'));
       setPriority(data.priority);
-      setTasks((data.tasks || []).map((task) => ({ ...task, id: task.id ?? 0, toDo: data })));
+      setTasks([]);
     },
   });
 
   const createMutation = useMutation(createToDo, {
     onSuccess: () => {
+      queryClient.invalidateQueries(['todos']);
       navigate('/toDos');
     },
   });
 
   const updateMutation = useMutation((updatedToDo: RequestToDoDTO) => updateToDo(Number(id), updatedToDo), {
     onSuccess: () => {
+      queryClient.invalidateQueries(['todo', id]);
       navigate('/toDos');
     },
   });

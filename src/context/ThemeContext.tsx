@@ -1,9 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { ThemeProvider as MuiThemeProvider, Theme } from '@mui/material/styles';
-import { costumTheme, darkTheme, lightTheme } from '../themes/themes';
+import { darkTheme, lightTheme, costumTheme } from '../themes/themes';
 
 interface ThemeContextType {
   theme: Theme;
+  themeName: string;
   toggleTheme: (themeName: string) => void;
 }
 
@@ -25,9 +26,10 @@ const themes = {
 
 function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [themeName, setThemeName] = useState<string>('light');
+
   useEffect(() => {
-    const theme = localStorage.getItem('theme') || 'light';
-    setThemeName(theme);
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    setThemeName(savedTheme);
   }, []);
 
   const toggleTheme = (themeName_: string) => {
@@ -36,7 +38,8 @@ function ThemeProvider({ children }: { children: React.ReactNode }) {
   };
 
   const theme = themes[themeName as keyof typeof themes];
-  const value = React.useMemo(() => ({ theme, toggleTheme }), [theme, toggleTheme]);
+  const value = React.useMemo(() => ({ theme, themeName, toggleTheme }), [theme, themeName, toggleTheme]);
+
   return (
     <ThemeContext.Provider value={value}>
       <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>

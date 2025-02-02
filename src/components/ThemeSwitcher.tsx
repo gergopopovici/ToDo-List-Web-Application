@@ -1,27 +1,20 @@
 import { IconButton } from '@mui/material';
+import { LightMode as LightModeIcon, DarkMode as DarkModeIcon, Palette as PaletteIcon } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
-import LightModeIcon from '@mui/icons-material/LightMode';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import PaletteIcon from '@mui/icons-material/Palette';
-import { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
 
 function ThemeSwitcher() {
-  const themeContext = useTheme();
-  const { toggleTheme } = themeContext;
+  const { themeName, toggleTheme } = useTheme();
   const { t } = useTranslation();
 
-  const themes = ['light', 'dark', 'custom'];
-  const [currentThemeIndex, setCurrentThemeIndex] = useState(0);
-
   const handleThemeToggle = () => {
-    const nextIndex = (currentThemeIndex + 1) % themes.length;
-    setCurrentThemeIndex(nextIndex);
+    const themes = ['light', 'dark', 'custom'];
+    const nextIndex = (themes.indexOf(themeName) + 1) % themes.length;
     toggleTheme(themes[nextIndex]);
   };
 
   const getIcon = () => {
-    switch (themes[currentThemeIndex]) {
+    switch (themeName) {
       case 'light':
         return <LightModeIcon />;
       case 'dark':
@@ -34,7 +27,7 @@ function ThemeSwitcher() {
   };
 
   return (
-    <IconButton onClick={handleThemeToggle} title={t(`${themes[currentThemeIndex]}_mode`)}>
+    <IconButton onClick={handleThemeToggle} title={t(`${themeName}_mode`)}>
       {getIcon()}
     </IconButton>
   );

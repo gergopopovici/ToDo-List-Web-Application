@@ -1,4 +1,4 @@
-import { useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -18,35 +18,42 @@ export function DeleteTaskIcon({ toDoId, id }: DeleteTaskProps) {
   const queryClient = useQueryClient();
   const { user } = useUser();
   const { t } = useTranslation();
+
+  const mutation = useMutation(() => deleteTaskFromToDo(toDoId, id), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('tasks');
+      queryClient.invalidateQueries('todos');
+      setBinIconClicked(false);
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
   const handleBinClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     setBinIconClicked(true);
   };
+
   const handleBinCancel = (event: React.MouseEvent) => {
     event.stopPropagation();
     setBinIconClicked(false);
   };
+
   const handleDeleteTask = async (event: React.MouseEvent) => {
     event.stopPropagation();
     try {
-      if (binIconClicked) {
-        if (user?.id !== undefined) {
-          const request: RequestToDoDTO = await getToDo(toDoId.toString());
-          if (request !== undefined) {
-            if (request.userId === user.id) {
-              await deleteTaskFromToDo(toDoId, id);
-            }
-          }
+      if (binIconClicked && user?.id !== undefined) {
+        const request: RequestToDoDTO = await getToDo(toDoId.toString());
+        if (request?.userId === user.id) {
+          mutation.mutate();
         }
-        await queryClient.invalidateQueries('tasks');
-        await queryClient.invalidateQueries('todos');
-        setBinIconClicked(false);
       }
     } catch (error: unknown) {
-      const errorMessage = (error as { response?: { data: string } }).response?.data || 'Unknown error occurred';
-      console.error(errorMessage);
+      console.error((error as { response?: { data: string } }).response?.data);
     }
   };
+
   return (
     <Box>
       <IconButton aria-label="delete" onClick={handleBinClick} sx={{ '&:hover': { color: 'red' } }}>
@@ -56,7 +63,9 @@ export function DeleteTaskIcon({ toDoId, id }: DeleteTaskProps) {
         <DialogTitle>{t('dialogdeletetasktitle')}</DialogTitle>
         <DialogContent>{t('dialogdeletetaskcontent')}</DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteTask}>{t('dialogyes')}</Button>
+          <Button onClick={handleDeleteTask} disabled={mutation.isLoading}>
+            {mutation.isLoading ? t('deleting') : t('dialogyes')}
+          </Button>
           <Button onClick={handleBinCancel}>{t('dialogno')}</Button>
         </DialogActions>
       </Dialog>

@@ -1,12 +1,5 @@
 const CACHE_NAME = 'my-app-cache-v1';
-const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/main.js',
-  '/styles.css',
-  '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png',
-];
+const ASSETS_TO_CACHE = ['/', '/index.html', '/styles.css', '/icons/icon-192x192.png', '/icons/icon-512x512.png'];
 
 this.addEventListener('install', (event) => {
   event.waitUntil(this.caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS_TO_CACHE)));

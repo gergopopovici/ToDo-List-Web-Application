@@ -40,7 +40,8 @@ function ListUsers() {
   });
 
   const handleDeleteUser = (userId: string) => {
-    if (user?.id.toString() !== userId && user?.admin) {
+    const userToDelete = users.find((u) => u.id === Number(userId));
+    if (user?.id.toString() !== userId && !userToDelete?.admin) {
       deleteUserMutation.mutate(userId);
     }
   };

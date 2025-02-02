@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { Box, TextField, Button, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { addTaskToToDo } from '../services/TaskService';
@@ -16,9 +16,11 @@ function TaskForm({ todoId, onClose, refetchTasks }: TaskFormProps) {
   const navigate = useNavigate();
   const [description, setDescription] = useState('');
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
 
   const createMutation = useMutation((newTask: RequestTaskDTO) => addTaskToToDo(todoId, newTask), {
     onSuccess: () => {
+      queryClient.invalidateQueries(['tasks', todoId]);
       refetchTasks();
       onClose();
       navigate(`/todo/${todoId}`);
