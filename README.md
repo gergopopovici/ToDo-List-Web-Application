@@ -67,7 +67,7 @@ Three themes available: Dark, Light, and Custom
 Stores the selected theme in local storage to retain preferences after refresh
 
 # Internationalization
-Supports three languages: # English, Hungarian, and Romanian
+Supports three languages: English, Hungarian, and Romanian
 Displays the currently selected language
 Saves language preference in local storage
 
