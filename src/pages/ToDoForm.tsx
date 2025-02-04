@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
-import { Box, TextField, Button, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { Box, TextField, Button, Typography } from '@mui/material';
 import { format } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 import { getToDo, createToDo, updateToDo } from '../services/ToDoService';
-import { ToDo } from '../models/ToDo';
+import { RequestToDoDTO, ResponseToDoDTO } from '../models/ToDo';
+import { useUser } from '../components/UserProvider';
+import { Task } from '../models/Task';
 
 function ToDoForm() {
   const { id } = useParams<{ id: string }>();
@@ -13,67 +16,94 @@ function ToDoForm() {
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [priority, setPriority] = useState(1);
+  const [priorityError, setPriorityError] = useState('');
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const { user } = useUser();
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
 
-  const { isLoading } = useQuery<ToDo>(['todo', id], () => getToDo(id!), {
+  const { isLoading } = useQuery<ResponseToDoDTO>(['todo', id], () => getToDo(id!), {
     enabled: !!id,
     onSuccess: (data) => {
       setTitle(data.title);
       setDescription(data.description);
       setDueDate(format(new Date(data.date), 'yyyy-MM-dd'));
       setPriority(data.priority);
+      setTasks([]);
     },
   });
 
   const createMutation = useMutation(createToDo, {
-    onSuccess: (newToDo) => {
-      console.log(newToDo);
-      navigate(`/todo/${newToDo.id}`);
+    onSuccess: () => {
+      queryClient.invalidateQueries(['todos']);
+      navigate('/toDos');
     },
   });
 
-  const updateMutation = useMutation(
-    ({ id: toDoId, newToDo }: { id: number; newToDo: Omit<ToDo, 'id'> }) => updateToDo(toDoId, newToDo),
-    {
-      onSuccess: () => {
-        navigate(`/todo/${id}`);
-      },
+  const updateMutation = useMutation((updatedToDo: RequestToDoDTO) => updateToDo(Number(id), updatedToDo), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['todo', id]);
+      navigate('/toDos');
     },
-  );
+  });
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    const newToDo: Omit<ToDo, 'id'> = {
+    const newToDo: RequestToDoDTO = {
       title,
       description,
       date: new Date(dueDate),
       priority,
+      userId: user!.id,
+      tasks: tasks.map((task) => ({ ...task, id: task.id ?? 0 })),
     };
 
     if (id) {
-      updateMutation.mutate({ id: parseInt(id, 10), newToDo });
+      updateMutation.mutate(newToDo);
     } else {
       createMutation.mutate(newToDo);
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  useEffect(() => {
+    if (priority < 1 || priority > 3) {
+      setPriorityError(t('priorityerror'));
+    } else {
+      setPriorityError('');
+    }
+  }, [priority]);
+
+  if (isLoading) {
+    return <div>{t('loading')}</div>;
+  }
 
   return (
     <Box
       component="form"
       onSubmit={handleSubmit}
-      sx={{ display: 'flex', flexDirection: 'column', gap: 2, marginTop: 5 }}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+        padding: 3,
+        borderRadius: 1,
+        boxShadow: 1,
+        backgroundColor: (theme) => theme.palette.background.default,
+        minHeight: '100vh',
+      }}
     >
-      <TextField label="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
+      <Typography variant="h4" gutterBottom>
+        {id ? t('todoeditpage') : t('todocreatepage')}
+      </Typography>
+      <TextField label={t('todotitle')} value={title} onChange={(e) => setTitle(e.target.value)} required />
       <TextField
-        label="Description"
+        label={t('tododescription')}
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         required
-        multiline
       />
       <TextField
-        label="Due Date"
+        label={t('tododuedate')}
         value={dueDate}
         onChange={(e) => setDueDate(e.target.value)}
         required
@@ -82,16 +112,22 @@ function ToDoForm() {
           shrink: true,
         }}
       />
-      <FormControl fullWidth>
-        <InputLabel>Priority</InputLabel>
-        <Select value={priority} onChange={(e) => setPriority(e.target.value as number)} label="Priority">
-          <MenuItem value={1}>High</MenuItem>
-          <MenuItem value={2}>Medium</MenuItem>
-          <MenuItem value={3}>Low</MenuItem>
-        </Select>
-      </FormControl>
-      <Button type="submit" variant="contained" disabled={createMutation.isLoading || updateMutation.isLoading}>
-        {id ? 'Update ToDo' : 'Create ToDo'}
+      <TextField
+        label={t('todopriority')}
+        type="number"
+        value={priority}
+        onChange={(e) => setPriority(Number(e.target.value))}
+        error={!!priorityError}
+        helperText={priorityError}
+        required
+      />
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        disabled={createMutation.isLoading || updateMutation.isLoading}
+      >
+        {id ? t('todoedit') : t('todocreate')}
       </Button>
     </Box>
   );

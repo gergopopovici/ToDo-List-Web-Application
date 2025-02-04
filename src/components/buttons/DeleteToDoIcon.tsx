@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { IconButton, Box, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useQueryClient } from 'react-query';
-import { useButtonClickedContext } from '../../Contexts/ButtonClickedProvider';
+import { useMutation, useQueryClient } from 'react-query';
+import { useTranslation } from 'react-i18next';
 import { destroyToDo } from '../../services/ToDoService';
+import { useUser } from '../UserProvider';
 
 interface DeleteToDoProps {
   id: number;
@@ -11,9 +12,26 @@ interface DeleteToDoProps {
 }
 
 export function DeleteToDoIcon({ id, onDelete }: DeleteToDoProps) {
-  const { setDeleteTodoButtonClicked } = useButtonClickedContext();
   const [binIconClicked, setBinIconClicked] = useState<boolean>(false);
   const queryClient = useQueryClient();
+  const { user } = useUser();
+  const { t } = useTranslation();
+
+  const mutation = useMutation(
+    () => {
+      if (user?.id !== undefined) {
+        return destroyToDo(id, user.id);
+      }
+      throw new Error(t('useridunidentified'));
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('todos');
+        setBinIconClicked(false);
+        onDelete();
+      },
+    },
+  );
 
   const handleBinClick = (event: React.MouseEvent) => {
     event.stopPropagation();
@@ -25,33 +43,31 @@ export function DeleteToDoIcon({ id, onDelete }: DeleteToDoProps) {
     setBinIconClicked(false);
   };
 
-  const handleDeleteToDo = async (event: React.MouseEvent) => {
+  const handleDeleteToDo = (event: React.MouseEvent) => {
     event.stopPropagation();
-    try {
-      if (id) {
-        await destroyToDo(id);
-        setBinIconClicked(false);
-        setDeleteTodoButtonClicked(true);
-        queryClient.invalidateQueries('todos');
-        onDelete();
-      }
-    } catch (error: unknown) {
-      const errorMessage = (error as { response?: { data: string } }).response?.data || 'Unknown error occurred';
-      console.log(`An error occurred while deleting the ToDo with ID ${id}: ${errorMessage}`);
+    if (id && user?.id !== undefined) {
+      mutation.mutate();
     }
   };
 
   return (
     <Box>
-      <IconButton aria-label="delete" onClick={handleBinClick} sx={{ '&:hover': { color: 'red' } }}>
+      <IconButton
+        aria-label="delete"
+        onClick={handleBinClick}
+        sx={{ '&:hover': { color: 'red' } }}
+        title={t('deletetodotitle')}
+      >
         <DeleteIcon />
       </IconButton>
       <Dialog open={binIconClicked} onClose={handleBinCancel}>
-        <DialogTitle>Delete ToDo</DialogTitle>
-        <DialogContent>Are you sure you want to delete this ToDo entry?</DialogContent>
+        <DialogTitle>{t('deletetodotitle')}</DialogTitle>
+        <DialogContent>{t('deletetododialogcontent')}</DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteToDo}>Yes</Button>
-          <Button onClick={handleBinCancel}>No</Button>
+          <Button onClick={handleDeleteToDo} disabled={mutation.isLoading}>
+            {mutation.isLoading ? t('deleting') : t('dialogyes')}
+          </Button>
+          <Button onClick={handleBinCancel}>{t('dialogno')}</Button>
         </DialogActions>
       </Dialog>
     </Box>
