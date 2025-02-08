@@ -92,7 +92,7 @@ Spring Boot for backend logic
 Spring Security & JWT for authentication
 MySQL as the database
 
-#BACKEND CODE:
+# BACKEND CODE:
 
 https://github.com/gergopopovici/ToDo-List-Backend/pull/1
 
