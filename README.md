@@ -93,5 +93,5 @@ Spring Security & JWT for authentication
 MySQL as the database
 
 BACKEND CODE:
-https://gitlab.com/bbte-mmi/idde/labs/2024/pgim2289/-/merge_requests/5#a3606ebe36505636b18edc04ec542f1978469749
-https://gitlab.com/bbte-mmi/idde/labs/2024/pgim2289
+https://github.com/gergopopovici/ToDo-List-Backend/pull/1
+https://github.com/gergopopovici/ToDo-List-Backend
