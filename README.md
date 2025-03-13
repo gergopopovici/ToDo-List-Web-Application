@@ -55,6 +55,10 @@ export default tseslint.config({
 
 This ToDo List Web Application is a feature-rich task management system built with a Spring Boot backend and MySQL database. It supports English, Hungarian, and Romanian, provides JWT-based authentication & authorization, allows users to switch between three themes (Dark, Light, Custom), and includes advanced filtering options. The application also supports PWA capabilities, enabling offline access and installation on native devices.
 
+# LIVE DEMO
+
+https://www.youtube.com/watch?v=8gek2CtDFXw
+
 # Features
 
 # Authentication & Authorization
