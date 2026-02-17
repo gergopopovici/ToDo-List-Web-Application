@@ -28,7 +28,7 @@ export const useUser = () => {
 
 function UserProvider({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, logout } = useAuth();
-  const userId = getCookieValue('userId');
+  const userId = localStorage.getItem('userId') || getCookieValue('userId');
   const {
     data: user,
     isError,

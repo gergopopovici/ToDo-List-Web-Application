@@ -16,7 +16,8 @@ function LoginPage() {
   const { t } = useTranslation();
 
   const mutation = useMutation((login: Login) => loginIn(login), {
-    onSuccess: () => {
+    onSuccess: (data: { id: { toString: () => string } }) => {
+      localStorage.setItem('userId', data.id.toString());
       setTimeout(() => {
         navigate('/toDos');
         logedIn();
