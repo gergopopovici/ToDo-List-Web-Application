@@ -25,7 +25,7 @@ function LoginPage() {
 
         setTimeout(() => {
           navigate('/toDos');
-        }, 1000);
+        }, 1000000);
       }
     },
     onError: () => {
