@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { loginIn } from '../services/LoginService';
 import { Login } from '../models/Login';
 import { useAuth } from '../context/AuthProvider';
+import { ResponseUserDTO } from '../models/User'; // Import your user type
 
 function LoginPage() {
   const [username, setUsername] = useState('');
@@ -15,13 +16,17 @@ function LoginPage() {
   const { logedIn } = useAuth();
   const { t } = useTranslation();
 
-  const mutation = useMutation((login: Login) => loginIn(login), {
-    onSuccess: (data: { id: { toString: () => string } }) => {
-      localStorage.setItem('userId', data.id.toString());
-      setTimeout(() => {
-        navigate('/toDos');
+  const mutation = useMutation<ResponseUserDTO, Error, Login>((login: Login) => loginIn(login), {
+    onSuccess: (data) => {
+      if (data && data.id) {
+        localStorage.setItem('userId', data.id.toString());
+
         logedIn();
-      }, 1500);
+
+        setTimeout(() => {
+          navigate('/toDos');
+        }, 1000);
+      }
     },
     onError: () => {
       setError(t('loginerror'));
@@ -65,18 +70,25 @@ function LoginPage() {
             {error}
           </Typography>
         )}
-        <TextField label={t('username')} value={username} onChange={(e) => setUsername(e.target.value)} required />
+        <TextField
+          label={t('username')}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+          disabled={mutation.isLoading}
+        />
         <TextField
           label={t('password')}
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          disabled={mutation.isLoading}
         />
         <Button type="submit" variant="contained" color="primary" disabled={mutation.isLoading}>
-          {t('submit')}
+          {mutation.isLoading ? t('loading') : t('submit')}
         </Button>
-        <Button variant="contained" color="primary" onClick={() => navigate('/register')}>
+        <Button variant="contained" color="primary" onClick={() => navigate('/register')} disabled={mutation.isLoading}>
           {t('register')}
         </Button>
       </Box>
