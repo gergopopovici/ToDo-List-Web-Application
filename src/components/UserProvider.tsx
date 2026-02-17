@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import { useQuery } from 'react-query';
 import { getUserById } from '../services/UserService';
 import { ResponseUserDTO } from '../models/User';
@@ -45,10 +45,10 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     logout();
   };
 
-  const userContextValue = React.useMemo(() => ({ user }), [user]);
+  const userContextValue = useMemo(() => ({ user }), [user]);
 
   if (isLoading && !!userId) {
-    return <div style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}>Loading User Profile...</div>;
+    return <div style={{ padding: '20px', textAlign: 'center' }}>Loading...</div>;
   }
 
   if (isError) {
@@ -68,3 +68,5 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     </UserContext.Provider>
   );
 }
+
+export default UserProvider;
