@@ -29,22 +29,31 @@ export const useUser = () => {
 function UserProvider({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, logout } = useAuth();
   const userId = localStorage.getItem('userId') || getCookieValue('userId');
+
   const {
     data: user,
     isError,
     error,
+    isLoading,
   } = useQuery<ResponseUserDTO>(['user', userId], () => getUserById(userId as string), {
     enabled: !!userId,
+    retry: false,
   });
 
   const handleSignOut = () => {
+    localStorage.removeItem('userId');
     logout();
   };
 
   const userContextValue = React.useMemo(() => ({ user }), [user]);
 
+  if (isLoading && !!userId) {
+    return <div style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}>Loading User Profile...</div>;
+  }
+
   if (isError) {
     console.error('Error fetching user:', error);
+    localStorage.removeItem('userId');
     return <div>Error loading user data. Please try again.</div>;
   }
 
@@ -59,5 +68,3 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     </UserContext.Provider>
   );
 }
-
-export default UserProvider;
